@@ -4,6 +4,7 @@ import cgi
 import numpy as np
 import sqlite3
 
+
 # Initialize the basic reply message
 message = "Necessary objects imported."
 success = True
