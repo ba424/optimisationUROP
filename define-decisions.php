@@ -8,6 +8,22 @@
     
     <h1>1. Define: Decisions</h1>
     <p><i>Let us know what you want to optimize.</i></p>
+    
+    <div class="container">
+        <table style="width: 450px; margin-left:auto;margin-right:auto;">
+          <tr><td>
+              <div id="pproject-id-div">
+                <label for="project-id"><b>Project ID</b></label>
+              </div>
+          </td><td>
+              <div id="project-id-div-input">
+                <input type="number" placeholder="Enter Project ID" name="project-id" id="input-id" style='width: unset;' required>
+              </div>
+          </td>
+          </tr>
+        </table>
+    </div>
+    
     <h2>What factors do you need to decide?</h2>
     <p><i>Describe each factor that you want to decide. Examples: “saddle height”, “material thickness”, “lamp color”.</i></p>
     
@@ -119,14 +135,23 @@
 
         function finishParams() {
             var noError = true;
+            var projectID = document.getElementById("input-id").value;
             var parameterNames = [];
             var parameterUnits = [];
-            var parameterBounds = [];
-    
+            var parameterLowerBounds = [];
+            var parameterUpperBounds = [];
+            
             /* var participantID = localStorage.getItem("id");
             var conditionID = localStorage.getItem("exp-condition");
             var applicationID = localStorage.getItem("app"); */
-    
+            var idValid = ((Number(projectID) > 0));
+            if (idValid) {
+                localStorage.setItem("project_id", projectID);
+            }
+            else {
+                noError = false;
+            }
+
             // Find all the objective names and bounds
             var tableParam = $("#parameter-table tbody");
                 
@@ -154,15 +179,15 @@
                     noError = false;
                 }
     
-                var parameterLowerBound = paramRowEntries[2];
-                var parameterUpperBound = paramRowEntries[3];
-                var validLowerBound = (!isNaN(parseFloat(parameterLowerBound)) && isFinite(parameterLowerBound));
-                var validUpperBound = (!isNaN(parseFloat(parameterUpperBound)) && isFinite(parameterUpperBound));
+                var paramLowerBound = paramRowEntries[2];
+                var paramUpperBound = paramRowEntries[3];
+                var validLowerBound = (!isNaN(parseFloat(paramLowerBound)) && isFinite(paramLowerBound));
+                var validUpperBound = (!isNaN(parseFloat(paramUpperBound)) && isFinite(paramUpperBound));
 
                 if (validLowerBound && validUpperBound){
-                    if (parseFloat(parameterLowerBound) < parseFloat(parameterUpperBound)){
-                        var rowBounds = [parseFloat(parameterLowerBound), parseFloat(parameterUpperBound)];
-                        parameterBounds.push(rowBounds);
+                    if (parseFloat(paramLowerBound) < parseFloat(paramUpperBound)){
+                        parameterLowerBounds.push(paramLowerBound);
+                        parameterUpperBounds.push(paramUpperBound)
                     }
                     else {
                        noError = false;
@@ -173,14 +198,15 @@
                 }
             });
             
-            if (parameterBounds.length != parameterNames.length){
+            if (parameterLowerBounds.length != parameterNames.length){
                 noError = false;
             }
     
             if (noError){
                 localStorage.setItem("parameter_name", parameterNames);
                 localStorage.setItem("parameter_unit", parameterUnits);
-                localStorage.setItem("parameter_bounds", parameterBounds);
+                localStorage.setItem("parameter_lower_bound", parameterLowerBounds);
+                localStorage.setItem("parameter_upper_bound", parameterUpperBounds);
     
                 localStorage.setItem("tutorial-done", true);
     
@@ -188,14 +214,16 @@
                     url: "./start-log-decisions.py",
                     type: "post",
                     datatype: "json",
-                    data: { 'parameter_name'    :String(parameterNames),
-                            'parameter_unit'    :String(parameterUnits),
-                            'parameter_bounds'  :String(parameterBounds) },
+                    data: { 'project_id'             :Number(projectID),
+                            'parameter_name'         :String(parameterNames),
+                            'parameter_unit'         :String(parameterUnits),
+                            'parameter_lower_bound'  :Number(parameterLowerBounds) ,
+                            'parameter_upper_bound'  :Number(parameterUpperBounds) },
                     success: function(result) {
                     submitReturned = true;
                     
                     var url = "define-objectives.php";
-                    location.href = url;
+                    // location.href = url;
                     },
                     error: function(result){
                         console.log("Error in finishing experiment: " + result.message);

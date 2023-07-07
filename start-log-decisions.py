@@ -30,7 +30,7 @@ def arrayToCsv(values):
         csv_string += str(values[i])
     return csv_string
 
-expectedArgs = ['parameter_name', 'parameter_unit', 'parameter_bounds']
+expectedArgs = ['project_id', 'parameter_name', 'parameter_unit', 'parameter_lower_bound', 'parameter_upper_bound']
 formValuesDefined = checkFormData(formData, expectedArgs)
 
 if not formValuesDefined:
@@ -40,18 +40,28 @@ else:
     conn = sqlite3.connect("Data/database.db")
     c = conn.cursor()
 
-    createFunctionTableQuery = '''CREATE TABLE IF NOT EXISTS time (param_name TEXT, param_unit TEXT, param_bounds TEXT)'''
+    createFunctionTableQuery = '''CREATE TABLE IF NOT EXISTS parameters (
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        project_id INTEGER, 
+        param_name TEXT, 
+        param_unit TEXT, 
+        param_lower_bound INTEGER, 
+        param_upper_bound INTEGER
+        )'''
+
     c.execute(createFunctionTableQuery)
     conn.commit()
 
+    projectID = int(formData['project_id'].value)
     parameterName = str(formData['parameter_name'].value)
     parameterUnit = str(formData['parameter_unit'].value)
-    parameterBounds = str(formData['parameter_bounds'].value)
+    parameterLowerBound = int(formData['parameter_lower_bound'].value)
+    parameterUpperBound = int(formData['parameter_upper_bound'].value)
     # typeStr = "start"
     # timeStr = str(time.time())
 
-    query = ''' INSERT INTO time VALUES (?, ?, ?)'''
-    c.execute(query, (parameterName, parameterUnit, parameterBounds))
+    query = ''' INSERT INTO parameters VALUES (?, ?, ?, ?, ?)'''
+    c.execute(query, (projectID, parameterName, parameterUnit, parameterLowerBound, parameterUpperBound))
 
     conn.commit()
     conn.close()

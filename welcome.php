@@ -15,6 +15,7 @@
         <li><b>Results. </b>We'll present you the best options with their tradeoffs.</li>
     </ol>
     <br>
+
     <div style="text-align: center;">
         <form action="/Demo/how-it-works.php">
             <input type="submit" value="Let's start!" id="start_button"/>
