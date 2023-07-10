@@ -11,13 +11,13 @@
     
     <div class="container">
         <table style="width: 450px; margin-left:auto;margin-right:auto;">
-          <tr><td>
+          <tr><td style="background-color: #D6EEEE;">
               <div id="pproject-id-div">
                 <label for="project-id"><b>Project ID</b></label>
               </div>
           </td><td>
               <div id="project-id-div-input">
-                <input type="number" placeholder="Enter Project ID" name="project-id" id="input-id" style='width: unset;' required>
+                <input type="number" placeholder="Enter Project ID" name="project-id" id="input-id" style='width: unset; font-family: Calibri; font-size: medium;' required>
               </div>
           </td>
           </tr>
@@ -136,6 +136,7 @@
         function finishParams() {
             var noError = true;
             var projectID = document.getElementById("input-id").value;
+            var projectIDArray = [];
             var parameterNames = [];
             var parameterUnits = [];
             var parameterLowerBounds = [];
@@ -201,6 +202,12 @@
             if (parameterLowerBounds.length != parameterNames.length){
                 noError = false;
             }
+
+            for (i = 0; i < parameterNames.length; i++) {
+                projectIDArray.push(projectID);
+            }
+
+            console.log(projectIDArray);
     
             if (noError){
                 localStorage.setItem("parameter_name", parameterNames);
@@ -214,16 +221,16 @@
                     url: "./start-log-decisions.py",
                     type: "post",
                     datatype: "json",
-                    data: { 'project_id'             :Number(projectID),
-                            'parameter_name'         :String(parameterNames),
-                            'parameter_unit'         :String(parameterUnits),
-                            'parameter_lower_bound'  :Number(parameterLowerBounds) ,
-                            'parameter_upper_bound'  :Number(parameterUpperBounds) },
+                    data: { 'project_id'             :Array(projectIDArray),
+                            'parameter_name'         :Array(parameterNames),
+                            'parameter_unit'         :Array(parameterUnits),
+                            'parameter_lower_bound'  :Array(parameterLowerBounds) ,
+                            'parameter_upper_bound'  :Array(parameterUpperBounds) },
                     success: function(result) {
                     submitReturned = true;
                     
                     var url = "define-objectives.php";
-                    // location.href = url;
+                    location.href = url;
                     },
                     error: function(result){
                         console.log("Error in finishing experiment: " + result.message);

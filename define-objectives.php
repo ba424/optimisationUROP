@@ -64,7 +64,7 @@
     </div>
     <br>
     <div style="text-align: right;">
-        <button class="button" id="finish-objectives-button" onclick="finishObjs()">Ready</button>
+        <button class="finish-objectives-button" id="finish-objectives-button" onclick="finishObjs()">Ready</button>
     </div>
     
     </div>
@@ -88,6 +88,7 @@
         #finish-objectives-button {
             text-align: center;
             font-family: calibri;
+            font-size: medium;
             color: white;
             background-color: #70ad47;
             padding: 8px 16px;

@@ -1,3 +1,4 @@
+#! C:\Users\user\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\python.exe
 import sys
 import json
 import cgi
@@ -51,17 +52,19 @@ else:
 
     c.execute(createFunctionTableQuery)
     conn.commit()
-
-    projectID = int(formData['project_id'].value)
+    
+    projectID = (formData['project_id'].value)
     parameterName = str(formData['parameter_name'].value)
     parameterUnit = str(formData['parameter_unit'].value)
-    parameterLowerBound = int(formData['parameter_lower_bound'].value)
-    parameterUpperBound = int(formData['parameter_upper_bound'].value)
+    parameterLowerBound = (formData['parameter_lower_bound'].value)
+    parameterUpperBound = (formData['parameter_upper_bound'].value)
     # typeStr = "start"
     # timeStr = str(time.time())
-
-    query = ''' INSERT INTO parameters VALUES (?, ?, ?, ?, ?)'''
-    c.execute(query, (projectID, parameterName, parameterUnit, parameterLowerBound, parameterUpperBound))
+    
+    # for i in range(len(projectID)):
+    query = '''INSERT INTO parameters (project_id,param_name,param_unit,param_lower_bound,param_upper_bound) VALUES (?, ?, ?, ?, ?)'''
+    # c.execute(query, (int(projectID[i]), parameterName[i], parameterUnit[i], int(parameterLowerBound[i]), int(parameterUpperBound[i])))
+    c.execute(query, (int(projectID), parameterName, parameterUnit, int(parameterLowerBound), int(parameterUpperBound)))
 
     conn.commit()
     conn.close()
