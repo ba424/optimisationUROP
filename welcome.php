@@ -8,9 +8,8 @@
     <h1>Optimize Anything!</h1>
     <p><i>Let AI help you find the best solution</i></p>
     <p><b>Three steps:</b></h2>
-    <p><i>Describe your objectives. You can include also subjective measurements, even opinions. Examples: “fatigue”, “fuel efficiency”, “price”.</i></p>
     <ol>
-        <li><b>Define.</b> Tell us what you want to optimize (5 mins)</li>
+        <li><b>Define. </b> Tell us what you want to optimize (5 mins)</li>
         <li><b>Optimise. </b> Let AI help you find the best options. (Stop when you want.)</li>
         <li><b>Results. </b>We'll present you the best options with their tradeoffs.</li>
     </ol>
