@@ -9,7 +9,7 @@
     <h1>1. Define: Decisions</h1>
     <p><i>Let us know what you want to optimize.</i></p>
     
-    <!--
+    
     <div class="container">
         <table style="width: 450px; margin-left:auto;margin-right:auto;">
           <tr><td style="background-color: #D6EEEE;">
@@ -24,7 +24,7 @@
           </tr>
         </table>
     </div>
-    -->
+    
     
     <h2>What factors do you need to decide?</h2>
     <p><i>Describe each factor that you want to decide. Examples: “saddle height”, “material thickness”, “lamp color”.</i></p>
@@ -124,7 +124,7 @@
             htmlNewRow += "<td contenteditable='true' class='record-data' id='record-parameter-upper'></td>"
             
             htmlNewRow += "<td id='record-data-buttons'>"
-            htmlNewRow += "<button class='record-delete' id='record-delete'><img src='./Pictures/delete.png' style='width: 20px'></button>"
+            htmlNewRow += "<button class='record-delete' id='record-delete'><img src='../Pictures/delete.png' style='width: 20px'></button>"
             htmlNewRow += "</td></tr>"
             $("#parameter-table", window.document).append(htmlNewRow);  
 
@@ -212,6 +212,7 @@
             console.log(projectIDArray);
     
             if (noError){
+                localStorage.setItem("project_id", projectIDArray);
                 localStorage.setItem("parameter_name", parameterNames);
                 localStorage.setItem("parameter_unit", parameterUnits);
                 localStorage.setItem("parameter_lower_bound", parameterLowerBounds);
@@ -220,19 +221,19 @@
                 localStorage.setItem("tutorial-done", true);
     
                 $.ajax({
-                    url: "./start-log-decisions.py",
+                    url: "../Archive/start-log-decisions.py",
                     type: "post",
                     datatype: "json",
-                    data: { 'project_id'             :Array(projectIDArray),
-                            'parameter_name'         :Array(parameterNames),
-                            'parameter_unit'         :Array(parameterUnits),
-                            'parameter_lower_bound'  :Array(parameterLowerBounds) ,
-                            'parameter_upper_bound'  :Array(parameterUpperBounds) },
+                    data: { 'project_id'             :String(projectIDArray),
+                            'parameter_name'         :String(parameterNames),
+                            'parameter_unit'         :String(parameterUnits),
+                            'parameter_lower_bound'  :String(parameterLowerBounds) ,
+                            'parameter_upper_bound'  :String(parameterUpperBounds) },
                     success: function(result) {
-                    submitReturned = true;
-                    
-                    var url = "define-objectives.php";
-                    location.href = url;
+                        submitReturned = true;
+                        console.log("Success")
+                        var url = "define-objectives.php";
+                        // location.href = url;
                     },
                     error: function(result){
                         console.log("Error in finishing experiment: " + result.message);

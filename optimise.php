@@ -9,26 +9,26 @@
     <p><i>Let AI suggest solutions with you</i></p>
     
     <p><b>1st solution idea</b><p>
-    <p>[Variable 1 = ] [Variable 2 = ]</p>
+    <p class="parameter_1_mobo"></p>
+    <p class="parameter_2_mobo"></p>
+    <p class="parameter_3_mobo"></p>
 
     <div id="options" style="display: inline-block; margin: 0 auto;">
         <button class="button" id="evaluate-button" style="width: 40%;" onclick="evaluateSolution()">I want to evaluate this</button>
-        <button class="button" id="skip-button" style="width: 40%;" onclick="">Skip. I know it's not good</button>
+        <button class="button" id="skip-button" style="width: 40%;" onclick="nextSolution()">Skip. I know it's not good</button>
     </div>
     
     <div id="evaluate-solution" style="display: none;">
         <form action="">
             <input size="40" placeholder="Give a memorable name to this idea" style="font-family: calibri; font-size: medium;"><br><br>
-            <label for="param1">param1 = </label>
-            <input type="text" id="param1" name="param1" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
-            <label for="param2">param2 = </label>
-            <input type="text" id="param2" name="param2" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
-            <label for="param3">param3 = </label>
-            <input type="text" id="param3" name="param3" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br><br>
+            <label for="obj1" class="objective_1_measure"></label>
+            <input type="text" id="obj1" name="obj1" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
+            <label for="obj2" class="objective_2_measure"></label>
+            <input type="text" id="obj2" name="obj2" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
             
             <div id="form-options" style="display: inline-block; margin: 0 auto;">
-                <button type="submit" class="button" id="next-button">Give me the next one</button>
-                <button type="submit" class="button" id="skip-button" formaction="">I want to refine this</button>
+                <button type="submit" class="button" id="next-button" onclick="nextSolution()">Give me the next one</button>
+                <button type="submit" class="button" id="skip-button" formaction="" onclick="refineSolution()">I want to refine this</button>
             </div>
         </form>
     </div>
@@ -72,6 +72,29 @@
     </style>
 
     <script>
+        var parameterNames = localStorage.getItem("parameter-names").split(",");
+        var parameterBounds = localStorage.getItem("parameter-bounds").split(",");
+        var objectiveNames = localStorage.getItem("objective-names").split(",");
+        var objectiveBounds = localStorage.getItem("objective-bounds").split(",");
+        
+        var paras1 = document.getElementsByClassName("parameter_1_mobo");
+        var paras2 = document.getElementsByClassName("parameter_2_mobo");
+        var paras3 = document.getElementsByClassName("parameter_3_mobo");
+        
+        for (i = 0; i < paras1.length; i++) {
+            paras1[i].innerHTML = parameterNames[0] + " = ";
+            paras2[i].innerHTML = parameterNames[1] + " = ";
+            paras3[i].innerHTML = parameterNames[2] + " = ";
+        }
+
+        var obj1 = document.getElementsByClassName("objective_1_measure");
+        var obj2 = document.getElementsByClassName("objective_2_measure");
+
+        for (i = 0; i < paras1.length; i++) {
+            obj1[i].innerHTML = objectiveNames[0] + " = ";
+            obj2[i].innerHTML = objectiveNames[1] + " = ";
+        }
+
         function evaluateSolution() {
             var x = document.getElementById('evaluate-solution');
             var y = document.getElementById('options')

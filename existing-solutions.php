@@ -141,9 +141,13 @@
     </style>
     <script>
         var parameterNames = localStorage.getItem("parameter-names").split(",");
+        var parameterBounds = localStorage.getItem("parameter-bounds").split(",");
+        var objectiveNames = localStorage.getItem("objective-names").split(",");
+        var objectiveBounds = localStorage.getItem("objective-bounds").split(",");
+        
         var paras1 = document.getElementsByClassName("parameter1");
-        var paras2 = document.getElementsByClassName("parameter2")
-        var paras3 = document.getElementsByClassName("parameter3")
+        var paras2 = document.getElementsByClassName("parameter2");
+        var paras3 = document.getElementsByClassName("parameter3");
         
         for (i = 0; i < paras1.length; i++) {
             paras1[i].innerHTML = parameterNames[0];
@@ -260,15 +264,18 @@
                 localStorage.setItem("good-solutions", goodSolutions);
                 localStorage.setItem("bad-solutions", badSolutions);
                 $.ajax({
-                    /* url: "./cgi/start_log.py",
+                    /*url: "./cgi/query_mobo.py",
                     type: "post",
                     datatype: "json",
-                    data: { 'participant_id'    :String(participantID),
-                            'application_id'    :String(applicationID),
-                            'condition_id'      :String(conditionID) },*/
+                    data: { 'parameter-names'    :String(parameterNames),
+                            'parameter-bounds'   :String(parameterBounds),
+                            'objective-names'    :String(objectiveNames), 
+                            'objective-bounds'   :String(objectiveBounds),
+                            'good-solutions'     :String(goodSolutions),
+                            'bad-solutions'      :String(badSolutions)},*/
                     success: function(result) {
-                    submitReturned = true;
-                    
+                        submitReturned = true;
+                        console.log("Success");
                     var url = "optimise.php";
                     location.href = url;
                     },

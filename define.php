@@ -236,7 +236,7 @@
                     success: function(result) {
                     submitReturned = true;
                     
-                    var url = "existing-solutions.php";
+                    var url = "confirm-definitions.php";
                     location.href = url;
                     },
                     error: function(result){
