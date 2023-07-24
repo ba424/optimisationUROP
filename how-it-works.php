@@ -33,7 +33,7 @@
     </div>
 
     <div style="text-align: right;">
-        <form action="/Demo/define-decisions.php">
+        <form action="/Demo/define.php">
             <input type="submit" value="Ready" id="start_button"/>
         </form>
     </div>
