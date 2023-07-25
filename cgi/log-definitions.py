@@ -31,7 +31,7 @@ def arrayToCsv(values):
         csv_string += str(values[i])
     return csv_string
 
-expectedArgs = ['parameter-names', 'parameter-bounds', 'objective-names', 'objective-bounds']
+expectedArgs = ['parameter-names', 'parameter-bounds', 'objective-names', 'objective-bounds', 'objective-min-max']
 formValuesDefined = checkFormData(formData, expectedArgs)
 
 if not formValuesDefined:
@@ -55,7 +55,8 @@ else:
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         obj_name TEXT, 
         obj_lower_bound INTEGER,
-        obj_upper_bound INTEGER 
+        obj_upper_bound INTEGER,
+        obj_min_max TEXT 
         )'''
 
     c.execute(createFunctionTableQuery_2)
@@ -65,6 +66,7 @@ else:
     parameterBounds = (formData['parameter-bounds'].value).split(',')
     objectiveNames = (formData['objective-names'].value).split(',')
     objectiveBounds = (formData['objective-bounds'].value).split(',')
+    objectiveMinMax = (formData['objective-min-max'].value).split(',')
 
     # typeStr = "start"
     # timeStr = str(time.time())
@@ -74,8 +76,8 @@ else:
         c.execute(query, (parameterNames[i], parameterBounds[2*i], parameterBounds[2*i+1]))
 
         if (i<2):
-            query = '''INSERT INTO definitions_objectives (obj_name,obj_lower_bound,obj_upper_bound) VALUES (?, ?, ?)'''
-            c.execute(query, (objectiveNames[i], objectiveBounds[2*i], objectiveBounds[2*i+1]))
+            query = '''INSERT INTO definitions_objectives (obj_name,obj_lower_bound,obj_upper_bound,obj_min_max) VALUES (?, ?, ?, ?)'''
+            c.execute(query, (objectiveNames[i], objectiveBounds[2*i], objectiveBounds[2*i+1], objectiveBounds[i]))
 
         conn.commit()
     

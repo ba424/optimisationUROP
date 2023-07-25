@@ -49,7 +49,8 @@
                 <tr>  
                 <th id="check-objective-name" width="40%"> Name </th>   
                 <th id="check-objective-lower-bound"> Lower Bound </th>  
-                <th id="check-objective-upper-bound"> Upper Bound </th>  
+                <th id="check-objective-upper-bound"> Upper Bound </th>
+                <th id="check-objective-min-max"> Minimise or Maximise </th>  
                 </tr>  
             </thead>  
             <tbody>
@@ -57,11 +58,13 @@
                 <td contenteditable="true" class="check-data" id="check-objective-name-1"></td>
                 <td contenteditable="true" class="check-data" id="check-objective-lower-bound-1"></td>
                 <td contenteditable="true" class="check-data" id="check-objective-upper-bound-1"></td>
+                <td contenteditable="true" class="check-data" id="check-objective-min-max-1"></td>
             </tr>
             <tr>
                 <td contenteditable="true" class="check-data" id="check-objective-name-2"></td>
                 <td contenteditable="true" class="check-data" id="check-objective-lower-bound-2"></td>
                 <td contenteditable="true" class="check-data" id="check-objective-upper-bound-2"></td>
+                <td contenteditable="true" class="check-data" id="check-objective-min-max-2"></td>
             </tr></tbody>
         </table>
     </div>
@@ -125,6 +128,7 @@
         var parameterBoundsRaw = localStorage.getItem("parameter-bounds").split(",");
         var objectiveNames = localStorage.getItem("objective-names").split(",");
         var objectiveBoundsRaw = localStorage.getItem("objective-bounds").split(",");
+        var objectiveMinMax = localStorage.getItem("objective-min-max").split(",");
 
         var parameterBounds = [];
         var objectiveBounds = [];
@@ -135,6 +139,7 @@
                 objectiveBounds.push([objectiveBoundsRaw[2*i], objectiveBoundsRaw[2*i+1]])
             }
         }
+
         for (var i = 0; i<parameterNames.length; i++) {
             document.getElementById("check-parameter-name-" + (i+1)).innerHTML = parameterNames[i];
             document.getElementById("check-parameter-lower-bound-" + (i+1)).innerHTML = parameterBounds[i][0];
@@ -144,6 +149,7 @@
                 document.getElementById("check-objective-name-" + (i+1)).innerHTML = objectiveNames[i];
                 document.getElementById("check-objective-lower-bound-" + (i+1)).innerHTML = objectiveBounds[i][0];
                 document.getElementById("check-objective-upper-bound-" + (i+1)).innerHTML = objectiveBounds[i][1];
+                document.getElementById("check-objective-min-max-" + (i+1)).innerHTML = objectiveMinMax[i];
             }
         }
 
@@ -152,6 +158,7 @@
             localStorage.setItem("parameter-bounds", parameterBounds);
             localStorage.setItem("objective-names", objectiveNames);
             localStorage.setItem("objective-bounds", objectiveBounds);
+            localStorage.setItem("objective-min-max", objectiveMinMax);
 
             // localStorage.setItem("tutorial-done", true);
 
@@ -162,7 +169,8 @@
                 data: { 'parameter-names'    :String(parameterNames),
                         'parameter-bounds'   :String(parameterBounds),
                         'objective-names'    :String(objectiveNames), 
-                        'objective-bounds'   :String(objectiveBounds)},
+                        'objective-bounds'   :String(objectiveBounds),
+                        'objective-min-max'  :String(objectiveMinMax)},
                 
                 success: function(result) {
                     submitReturned = true;
