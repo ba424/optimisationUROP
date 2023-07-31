@@ -3,6 +3,12 @@
 <head>
 </head>
 <body>
+    <?php
+    $one = htmlspecialchars($_GET["one"]);
+    $two = htmlspecialchars($_GET["two"]);
+    
+    echo "one: $one two: $two";
+    ?>
     <div id="background">
     
     <h1>2. Optimise</h1>

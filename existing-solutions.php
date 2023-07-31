@@ -9,17 +9,31 @@
     
     <h1>One question before we start…</h1>
     <p><i>Are there known good/bad solutions we should include?</i></p>
-
+    
+    <div class="tooltip">For example
+        <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 10px;">
+                <p class="parameter1"></p><p>1500</p>
+                <p class="parameter2"></p><p>10</p>
+                <p class="parameter3"></p><p>1</p>
+        </span>
+    </div>
+    <br>
+    <br>
+    <br>
     <div id="buttons" style="display:block">
         <div class="add-existing-solutions">
             <button id="add-existing-solutions" onclick="addExistingSolutions()">Yes, some</button>
         </div>
 
         <div class="start-button">
+            <button id="start" onclick="finishSolutions()">No let's start</button>
+        </div>
+
+        <!-- <div class="start-button">
             <form action="/Demo/optimise.php" id="start-form">
                 <button id="start" type="submit">No, let's start</button>
             </form>
-        </div>
+        </div> -->
 
         <div class="clearfix"></div>
     </div>
@@ -136,6 +150,31 @@
             border-width: 1.5px;
             display: inline-block;
             cursor:pointer;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 600px;
+            background-color: #6a6e73;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            
+            /* Position the tooltip */
+            position: absolute;
+            z-index: 1;
+            top: -5px;
+            left: 105%;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
         }
 
     </style>
@@ -264,7 +303,7 @@
                 localStorage.setItem("good-solutions", goodSolutions);
                 localStorage.setItem("bad-solutions", badSolutions);
                 $.ajax({
-                    /*url: "./cgi/query_mobo.py",
+                    url: "../Demo/cgi/initial_mobo.py",
                     type: "post",
                     datatype: "json",
                     data: { 'parameter-names'    :String(parameterNames),
@@ -272,12 +311,14 @@
                             'objective-names'    :String(objectiveNames), 
                             'objective-bounds'   :String(objectiveBounds),
                             'good-solutions'     :String(goodSolutions),
-                            'bad-solutions'      :String(badSolutions)},*/
+                            'bad-solutions'      :String(badSolutions)},
                     success: function(result) {
                         submitReturned = true;
+                        solution = result.solution
+                        localStorage.setItem("solution", solution);
                         console.log("Success");
-                    var url = "optimise.php";
-                    location.href = url;
+                        var url = "optimise.php";
+                        location.href = url;
                     },
                     error: function(result){
                         console.log("Error in finishing experiment: " + result.message);
