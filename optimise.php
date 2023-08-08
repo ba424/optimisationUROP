@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <?php
-    $one = htmlspecialchars($_GET["one"]);
-    $two = htmlspecialchars($_GET["two"]);
+    // $one = htmlspecialchars($_GET["one"]);
+    // $two = htmlspecialchars($_GET["two"]);
     
-    echo "one: $one two: $two";
+    // echo "one: $one two: $two";
     ?>
+
     <div id="background">
     
     <h1>2. Optimise</h1>
     <p><i>Let AI suggest solutions with you</i></p>
     
-    <p><b>1st solution idea</b><p>
+    <p><b>Solution idea</b><p>
+    <!-- <div style="display: flex; justify-content: left;">
+        <p class="parameter_1_mobo"></p><p id="solution_1"></p>
+    </div>
+    <div style="display: flex; justify-content: left;">
+        <p class="parameter_2_mobo"></p><p id="solution_2"></p>
+    </div>
+    <div style="display: flex; justify-content: left;">
+        <p class="parameter_3_mobo"></p><p id="solution_3"></p>
+    </div> -->
+
     <p class="parameter_1_mobo"></p>
     <p class="parameter_2_mobo"></p>
     <p class="parameter_3_mobo"></p>
 
+    
     <div id="options" style="display: inline-block; margin: 0 auto;">
         <button class="button" id="evaluate-button" style="width: 40%;" onclick="evaluateSolution()">I want to evaluate this</button>
         <button class="button" id="skip-button" style="width: 40%;" onclick="nextSolution()">Skip. I know it's not good</button>
@@ -82,26 +95,34 @@
         var parameterBounds = localStorage.getItem("parameter-bounds").split(",");
         var objectiveNames = localStorage.getItem("objective-names").split(",");
         var objectiveBounds = localStorage.getItem("objective-bounds").split(",");
+        var objectiveMinMax = localStorage.getItem("objective-min-max").split(",");
+        var goodSolutions = localStorage.getItem("good-solutions").split(",");
+        var badSolutions = localStorage.getItem("bad-solutions").split(",");
+        var solution = localStorage.getItem("solution").split(",");
         
         var paras1 = document.getElementsByClassName("parameter_1_mobo");
         var paras2 = document.getElementsByClassName("parameter_2_mobo");
         var paras3 = document.getElementsByClassName("parameter_3_mobo");
         
         for (i = 0; i < paras1.length; i++) {
-            paras1[i].innerHTML = parameterNames[0] + " = ";
-            paras2[i].innerHTML = parameterNames[1] + " = ";
-            paras3[i].innerHTML = parameterNames[2] + " = ";
+            paras1[i].innerHTML = parameterNames[0] + " =  " + solution[0];
+            paras2[i].innerHTML = parameterNames[1] + " =  " + solution[1];
+            paras3[i].innerHTML = parameterNames[2] + " =  " + solution[2];
         }
-
-        var obj1 = document.getElementsByClassName("objective_1_measure");
-        var obj2 = document.getElementsByClassName("objective_2_measure");
-
-        for (i = 0; i < paras1.length; i++) {
-            obj1[i].innerHTML = objectiveNames[0] + " = ";
-            obj2[i].innerHTML = objectiveNames[1] + " = ";
-        }
+        
+        // Individual solutions
+        // document.getElementById("solution_1").innerHTML = solution[0];
+        // document.getElementById("solution_2").innerHTML = solution[1];
+        // document.getElementById("solution_3").innerHTML = solution[2];
 
         function evaluateSolution() {
+            var obj1 = document.getElementsByClassName("objective_1_measure");
+            var obj2 = document.getElementsByClassName("objective_2_measure");
+
+            for (i = 0; i < paras1.length; i++) {
+                obj1[i].innerHTML = objectiveNames[0] + " = ";
+                obj2[i].innerHTML = objectiveNames[1] + " = ";
+            }
             var x = document.getElementById('evaluate-solution');
             var y = document.getElementById('options')
             if (x.style.display == 'none') {
@@ -113,6 +134,33 @@
                 y.style.display = 'inline-block';
             }
         }
+
+        function nextSolution() {
+            $.ajax({
+                url: "../Demo/cgi/initial_mobo.py",
+                type: "post",
+                datatype: "json",
+                data: { 'parameter-names'    :String(parameterNames),
+                        'parameter-bounds'   :String(parameterBounds),
+                        'objective-names'    :String(objectiveNames), 
+                        'objective-bounds'   :String(objectiveBounds),
+                        'objective-min-max'  :String(objectiveMinMax),
+                        'good-solutions'     :String(goodSolutions),
+                        'bad-solutions'      :String(badSolutions)},
+                success: function(result) {
+                    submitReturned = true;
+                    solution = result.solution
+                    localStorage.setItem("solution", solution);
+                    console.log("Success");
+                    var url = "optimise.php";
+                    location.href = url;
+                },
+                error: function(result){
+                    console.log("Error in finishing experiment: " + result.message);
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

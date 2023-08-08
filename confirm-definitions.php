@@ -18,8 +18,8 @@
             <thead>  
                 <tr>  
                 <th id="check-parameter-name" width="40%"> Name </th>   
-                <th id="check-parameter-lower-bound"> Lower Bound </th>  
-                <th id="check-parameter-upper-bound"> Upper Bound </th>  
+                <th id="check-parameter-lower-bound"> Minimum </th>  
+                <th id="check-parameter-upper-bound"> Maximum </th>  
                 </tr>  
             </thead>  
             <tbody>
@@ -48,8 +48,8 @@
             <thead>  
                 <tr>  
                 <th id="check-objective-name" width="40%"> Name </th>   
-                <th id="check-objective-lower-bound"> Lower Bound </th>  
-                <th id="check-objective-upper-bound"> Upper Bound </th>
+                <th id="check-objective-lower-bound"> Minimum </th>  
+                <th id="check-objective-upper-bound"> Maximum </th>
                 <th id="check-objective-min-max"> Minimise or Maximise </th>  
                 </tr>  
             </thead>  

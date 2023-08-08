@@ -8,7 +8,7 @@ import requests
 
 import os
 import torch
-
+from import_all import *
 from botorch.models.gp_regression import FixedNoiseGP
 from botorch.models.model_list_gp_regression import ModelListGP
 from botorch.models.transforms.outcome import Standardize
@@ -16,7 +16,9 @@ from gpytorch.mlls.sum_marginal_log_likelihood import SumMarginalLogLikelihood
 from botorch.utils.transforms import unnormalize, normalize
 from botorch.utils.sampling import draw_sobol_samples
 
+# os.environ['HOMEPATH'] = 'C:/Users/user/AppData/Local/Microsoft/WindowsApps'
 # os.environ['HOME'] = 'C:/Users/user/AppData/Local/Microsoft/WindowsApps'
+# os.environ['USERPROFILE'] = 'C:/Users/user/AppData/Local/Microsoft/WindowsApps/python.exe'
 
 # Initialize the basic reply message
 message = "Necessary objects imported."
@@ -34,38 +36,56 @@ def checkFormData(data, expectedArgs):
             break
     return argsDefined
 
-expectedArgs = ['parameter-names', 'parameter-bounds', 'objective-names', 'objective-bounds', 'good-solutions', 'bad-solutions']
+expectedArgs = ['parameter-names', 'parameter-bounds', 'objective-names', 'objective-bounds', 'objective-min-max', 'good-solutions', 'bad-solutions']
 formValuesDefined = checkFormData(formData, expectedArgs)
 
-if not formValuesDefined:
-    success = False
-    message = "Form values not defined."
-else:
-    parameterNames = (formData['parameter-names'].value).split(',')
-    parameterBounds = (formData['parameter-bounds'].value).split(',')
-    objectiveNames = (formData['objective-names'].value).split(',')
-    objectiveBounds = (formData['objective-bounds'].value).split(',')
-    # goodSolutions = (formData['good-solutions'].value).split(',')
-    # badSolutions = (formData['bad-solutions'].value).split(',')
+# if not formValuesDefined:
+#     success = False
+#     message = "Form values not defined."
+# else:
+parameterNames = (formData['parameter-names'].value).split(',')
+parameterBounds = (formData['parameter-bounds'].value).split(',')
+objectiveNames = (formData['objective-names'].value).split(',')
+objectiveBounds = (formData['objective-bounds'].value).split(',')
+objectiveMinMax = (formData['objective-min-max'].value).split(',')
+# goodSolutions = (formData['good-solutions'].value).split(',')
+# badSolutions = (formData['bad-solutions'].value).split(',')
 
-    tkwargs = {
-        "dtype": torch.double,
-        "device": torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-    }
 
-    num_parameters = len(parameterNames)
-    parameters = torch.zeros(2, num_parameters)
+num_parameters = len(parameterNames)
+parameter_bounds = torch.zeros(2, num_parameters)
+parameter_bounds_normalised = torch.zeros(2, num_parameters)
+
+for i in range(num_parameters):
+    parameter_bounds[0][i] = float(parameterBounds[2*i])
+    parameter_bounds[1][i] = float(parameterBounds[2*i + 1])
+    parameter_bounds_normalised[0][i] = float(0)
+    parameter_bounds_normalised[1][i] = float(1)
+
+def unnormalise_parameters(x_tensor):
+    x_bounds = parameter_bounds
+    x_actual = torch.zeros(1, num_parameters)
     for i in range(num_parameters):
-        parameters[0][i] = float(parameterBounds[2*i])
-        parameters[1][i] = float(parameterBounds[2*i + 1])
+        x_actual[0][i] = x_tensor[0][i]*(x_bounds[1][i] - x_bounds[0][i]) + x_bounds[0][i]
+    return x_actual
 
-    
+# generate training data
+def generate_initial_data(n_samples=1):
     # generate training data
-    train_x = torch.round(draw_sobol_samples(bounds=parameters, n=n, q=1).squeeze(1))
+    train_x = draw_sobol_samples(
+        bounds=parameter_bounds_normalised, n=1, q=n_samples, seed=torch.randint(1000000, (1,)).item()
+    ).squeeze(0)
     train_x = train_x.type(torch.DoubleTensor)
-    # print("\nSolution 0: ", train_x)
+    train_x_actual = torch.round(unnormalise_parameters(train_x))
+    #print("Initial solution: ", train_x_actual)
+    #train_obj_actual, train_obj = objective_function(train_x_actual)
+
+    return train_x, train_x_actual
+
+train_x, train_x_actual = generate_initial_data()
 
 reply = {}
+reply['solution'] = train_x_actual.tolist()
 reply['success'] = True
 reply['message'] = message
 

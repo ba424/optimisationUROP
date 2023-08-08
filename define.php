@@ -18,8 +18,8 @@
             <thead>  
                 <tr>  
                 <th id="record-parameter-name" width="40%"> Name </th>   
-                <th id="record-parameter-lower-bound"> Lower Bound </th>  
-                <th id="record-parameter-upper-bound"> Upper Bound </th>  
+                <th id="record-parameter-lower-bound"> Minimum </th>  
+                <th id="record-parameter-upper-bound"> Maximum </th>  
                 </tr>  
             </thead>  
             <tbody>
@@ -50,8 +50,8 @@
             <thead>  
                 <tr>  
                 <th id="record-objective-name" width="40%"> Name </th>   
-                <th id="record-objective-lower-bound"> Lower Bound </th>  
-                <th id="record-objective-upper-bound"> Upper Bound </th> 
+                <th id="record-objective-lower-bound"> Minimum </th>  
+                <th id="record-objective-upper-bound"> Maximum </th> 
                 <th id="record-objective-min-max"> Minimise or Maximise </th>  
                 </tr>  
             </thead>  
@@ -68,13 +68,13 @@
                 </td>
             </tr>
             <tr>
-                <td contenteditable="true" class="record-data" id="record-objective-name">Travel time (hrs)</td>
-                <td contenteditable="true" class="record-data" id="record-objective-lower-bound">2</td>
-                <td contenteditable="true" class="record-data" id="record-objective-upper-bound">10</td>
+                <td contenteditable="true" class="record-data" id="record-objective-name">Satisfaction (%)</td>
+                <td contenteditable="true" class="record-data" id="record-objective-lower-bound">0</td>
+                <td contenteditable="true" class="record-data" id="record-objective-upper-bound">100</td>
                 <td contenteditable="false" class="record-data" id="record-objective-min-max">
                     <select id="min-max-2" style="font-family: calibri; font-size: medium;">
-                        <option value="minimise" selected="selected">minimise</option>
-                        <option value="maximise">maximise</option>
+                        <option value="minimise">minimise</option>
+                        <option value="maximise" selected="selected">maximise</option>
                     </select>
                 </td>
             </tr></tbody>

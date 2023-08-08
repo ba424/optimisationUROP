@@ -183,6 +183,7 @@
         var parameterBounds = localStorage.getItem("parameter-bounds").split(",");
         var objectiveNames = localStorage.getItem("objective-names").split(",");
         var objectiveBounds = localStorage.getItem("objective-bounds").split(",");
+        var objectiveMinMax = localStorage.getItem("objective-min-max").split(",");
         
         var paras1 = document.getElementsByClassName("parameter1");
         var paras2 = document.getElementsByClassName("parameter2");
@@ -310,6 +311,7 @@
                             'parameter-bounds'   :String(parameterBounds),
                             'objective-names'    :String(objectiveNames), 
                             'objective-bounds'   :String(objectiveBounds),
+                            'objective-min-max'  :String(objectiveMinMax),
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions)},
                     success: function(result) {
