@@ -240,6 +240,7 @@
 
         function finishSolutions() {
             var noError = true;
+            var newSolution = true;
             var goodSolutions = [];
             var badSolutions = [];
             // Register good solutions
@@ -303,6 +304,7 @@
             if (noError){
                 localStorage.setItem("good-solutions", goodSolutions);
                 localStorage.setItem("bad-solutions", badSolutions);
+                localStorage.setItem("new-solution", newSolution);
                 $.ajax({
                     url: "../Demo/cgi/initial_mobo.py",
                     type: "post",
@@ -313,7 +315,8 @@
                             'objective-bounds'   :String(objectiveBounds),
                             'objective-min-max'  :String(objectiveMinMax),
                             'good-solutions'     :String(goodSolutions),
-                            'bad-solutions'      :String(badSolutions)},
+                            'bad-solutions'      :String(badSolutions),
+                            'new-solution'       :String(newSolution)},
                     success: function(result) {
                         submitReturned = true;
                         solution = result.solution
