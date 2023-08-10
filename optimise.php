@@ -85,6 +85,10 @@
             display: inline-block;
             cursor: pointer;
         }
+
+        .button:active {
+            background-color: #009933;
+        }
     
     </style>
 
@@ -116,8 +120,8 @@
         // document.getElementById("solution_3").innerHTML = solution[2];
 
         function newSolution() {
-            newSolution = true;
-            nextEvaluation = false;
+            callNewSolution = true;
+            callNextEvaluation = false;
             // Placeholders
             solutionName = "";
             obj1 = "";
@@ -135,8 +139,8 @@
                         'good-solutions'     :String(goodSolutions),
                         'bad-solutions'      :String(badSolutions),
                         
-                        'new-solution'       :String(newSolution),
-                        'next-evaluation'    :String(nextEvaluation),
+                        'new-solution'       :String(callNewSolution),
+                        'next-evaluation'    :String(callNextEvaluation),
                         
                         'solution-name'      :String(solutionName),
                         'objective-1'        :String(obj1),
@@ -145,8 +149,8 @@
                 success: function(result) {
                     submitReturned = true;
                     solutionList = result.solution
-                    console.log(result.newSolution[0]=="true")
                     console.log(result.solution)
+                    console.log(result.solution_normalised)
                     localStorage.setItem("solution-list", solutionList);
                     console.log("Success");
                     var url = "optimise.php";
@@ -199,8 +203,8 @@
         function nextEvaluation() {
             noError = true;
 
-            newSolution = false;
-            nextEvaluation = true;
+            callNewSolution = false;
+            callNextEvaluation = true;
 
             var solutionName = document.getElementById("solution_name").value;
             var obj1 = document.getElementById("obj1").value;
@@ -241,9 +245,10 @@
 
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
+                            'current-solutions'  :String(solutionList),
 
-                            'new-solution'       :String(newSolution),
-                            'next-evaluation'    :String(nextEvaluation),
+                            'new-solution'       :String(callNewSolution),
+                            'next-evaluation'    :String(callNextEvaluation),
 
                             'solution-name'      :String(solutionName),
                             'objective-1'        :String(obj1),
@@ -251,6 +256,10 @@
 
                     success: function(result) {
                         submitReturned = true;
+                        solutionList = result.solution
+                        console.log(result.solution)
+                        console.log(result.solution_normalised)
+                        localStorage.setItem("solution-list", solutionList);
                         console.log("Success")
                         var url = "optimise.php";
                         location.href = url;

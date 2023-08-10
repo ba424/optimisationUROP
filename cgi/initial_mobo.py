@@ -1,4 +1,4 @@
-#! C:\Users\user\AppData\Local\Microsoft\WindowsApps\python.exe
+#! C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe
 import sys
 import json
 import cgi
@@ -36,14 +36,36 @@ objectiveNames = (formData['objective-names'].value).split(',')
 objectiveBounds = (formData['objective-bounds'].value).split(',')
 objectiveMinMax = (formData['objective-min-max'].value).split(',')
 
-# goodSolutions = (formData['good-solutions'].value).split(',')
-# badSolutions = (formData['bad-solutions'].value).split(',')
+try:
+    goodSolutions = (formData['good-solutions'].value).split(',')
+except:
+    pass
+try:
+    badSolutions = (formData['bad-solutions'].value).split(',')
+except:
+    pass
+try:
+    currentSolutions = (formData['current-solutions'].value).split(',')
+except:
+    pass
 
 newSolution = (formData['new-solution'].value).split(',')
 nextEvaluation = (formData['next-evaluation'].value).split(',')
 
-if (nextEvaluation[0] == "true"):
+try:
+    solutionName = (formData['solution-name'].value).split(',')
+except:
     pass
+try: 
+    obj1 = float((formData['objective-1'].value))
+except:
+    pass
+try:
+    obj2 = float((formData['objective-2'].value))
+except:
+    pass
+
+
 
 num_parameters = len(parameterNames)
 parameter_bounds = torch.zeros(2, num_parameters)
@@ -55,13 +77,12 @@ for i in range(num_parameters):
     parameter_bounds_normalised[0][i] = float(0)
     parameter_bounds_normalised[1][i] = float(1)
 
+obj_ref_point = torch.tensor([-1., -1.])
 objective_bounds = torch.zeros(2, 2)
 for i in range(2):
-    parameter_bounds[0][i] = float(parameterBounds[2*i])
-    parameter_bounds[1][i] = float(parameterBounds[2*i + 1])
-
-if (newSolution[0] == "true"):
-    solutionsList = []
+    objective_bounds[0][i] = float(objectiveBounds[2*i])
+    objective_bounds[1][i] = float(objectiveBounds[2*i + 1])
+    
 
 def unnormalise_parameters(x_tensor):
     x_bounds = parameter_bounds
@@ -70,6 +91,23 @@ def unnormalise_parameters(x_tensor):
         x_actual[0][i] = x_tensor[0][i]*(x_bounds[1][i] - x_bounds[0][i]) + x_bounds[0][i]
     return x_actual
 
+def normalise_parameters(x_tensor):
+    x_bounds = parameter_bounds
+    x_norm = torch.zeros(1, num_parameters, dtype=torch.float64)
+    for i in range(num_parameters):
+        x_norm[0][i] = (x_tensor[0][i] - x_bounds[0][i])/(x_bounds[1][i] - x_bounds[0][i]) 
+    return x_norm
+
+def normalise_objectives(obj_tensor_actual):
+    objectives_min_max = objectiveMinMax
+    obj_tensor_norm = torch.zeros(obj_tensor_actual.size(), dtype=torch.float64)
+    for i in range (obj_tensor_actual.size()[1]):
+      if (objectives_min_max[i] == "minimise"): # MINIMISE (SMALLER VALUES CLOSER TO 1)
+        obj_tensor_norm[0][i] = -2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) + 1
+      elif (objectives_min_max[i] == "maximise"): # MAXIMISE (LARGER VALUES CLOSER TO -1)
+        obj_tensor_norm[0][i] =  2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) - 1
+
+    return obj_tensor_norm
 # generate training data
 def generate_initial_data(n_samples=1):
     # generate training data
@@ -78,16 +116,10 @@ def generate_initial_data(n_samples=1):
     ).squeeze(0)
     train_x = train_x.type(torch.DoubleTensor)
     train_x_actual = torch.round(unnormalise_parameters(train_x))
-    #print("Initial solution: ", train_x_actual)
-    #train_obj_actual, train_obj = objective_function(train_x_actual)
+    # print("Initial solution: ", train_x_actual)
+    # train_obj_actual, train_obj = objective_function(train_x_actual)
 
     return train_x, train_x_actual
-
-train_x, train_x_actual = generate_initial_data()
-solutionsList.append(train_x_actual.tolist()[0])
-reply = {}
-reply['solution'] = solutionsList
-reply['newSolution'] = newSolution
 
 def initialize_model(train_x, train_obj):
     # define models for objective and constraint
@@ -98,17 +130,17 @@ def initialize_model(train_x, train_obj):
 def optimize_qehvi(model, train_obj, sampler):
     """Optimizes the qEHVI acquisition function, and returns a new candidate and observation."""
     # partition non-dominated space into disjoint rectangles
-    partitioning = NondominatedPartitioning(ref_point=ref_point, Y=train_obj)
+    partitioning = NondominatedPartitioning(ref_point=obj_ref_point, Y=train_obj)
     acq_func = qExpectedHypervolumeImprovement(
         model=model,
-        ref_point=ref_point.tolist(),  # use known reference point
+        ref_point=obj_ref_point.tolist(),  # use known reference point
         partitioning=partitioning,
         sampler=sampler,
     )
     # optimize
     candidates, _ = optimize_acqf(
         acq_function=acq_func,
-        bounds=problem_bounds,
+        bounds=parameter_bounds_normalised,
         q=BATCH_SIZE,
         num_restarts=NUM_RESTARTS,
         raw_samples=RAW_SAMPLES,  # used for intialization heuristic
@@ -116,17 +148,62 @@ def optimize_qehvi(model, train_obj, sampler):
         sequential=True,
     )
     # observe new values
-    new_x =  unnormalize(candidates.detach(), bounds=problem_bounds)
+    new_x =  unnormalize(candidates.detach(), bounds=parameter_bounds_normalised)
     new_x_actual = unnormalise_parameters(new_x)
-    print("Next solution: ", new_x_actual)
-    new_obj, new_obj_actual = objective_function(new_x_actual)
 
-    return new_x, new_x_actual, new_obj, new_obj_actual
+    return new_x, new_x_actual
+
+if (newSolution[0]=="true"):
+    solutionsList = []
+    train_x, train_x_actual = generate_initial_data()
+    solutionsList.append(train_x_actual.tolist()[0])
+    reply = {}
+    reply['solution'] = solutionsList
+    reply['newSolution'] = newSolution
+
+if (nextEvaluation[0] == "true"):
+    train_obj_actual = torch.tensor([[obj1, obj2]], dtype=torch.float64)
+    train_obj = normalise_objectives(train_obj_actual)
+    train_x_actual = torch.zeros(1,num_parameters, dtype=torch.float64)
+    for i in range(1, num_parameters+1):
+        train_x_actual[0][-1*i] = float(currentSolutions[-1*i])
+    train_x = normalise_parameters(train_x_actual)
+
+    torch.manual_seed(SEED)
+
+    hv = Hypervolume(ref_point=obj_ref_point)
+    # Hypervolumes
+    hvs_qehvi = []
+    # Initialize GP models
+    mll, model = initialize_model(train_x, train_obj)
+    # Compute Pareto front and hypervolume
+    pareto_mask = is_non_dominated(train_obj)
+    pareto_y = train_obj[pareto_mask]
+    volume = hv.compute(pareto_y)
+    hvs_qehvi.append(volume)
+    
+    # Fit Models
+    fit_gpytorch_model(mll)
+    # Define qEI acquisition modules using QMC sampler
+    qehvi_sampler = SobolQMCNormalSampler(num_samples=MC_SAMPLES)
+    # Optimize acquisition functions and get new observations
+    new_x, new_x_actual = optimize_qehvi(model, train_obj, qehvi_sampler)
+    
+    # Update training points
+    train_x = torch.cat([train_x, new_x])
+    train_x_actual = torch.cat([train_x_actual, new_x_actual])
+    # train_obj = torch.cat([train_obj, new_obj])
+    # train_obj_actual = torch.cat([train_obj_actual, new_obj_actual])
+
+    currentSolutions.append(train_x_actual.tolist()[-1])
+    reply = {}
+    reply['solution'] = currentSolutions
+    reply['solution_normalised'] = train_x.tolist()
 
 def mobo_execute(seed, iterations, initial_samples):
     torch.manual_seed(seed)
 
-    hv = Hypervolume(ref_point=ref_point)
+    hv = Hypervolume(ref_point=obj_ref_point)
     # Hypervolumes
     hvs_qehvi = []
 

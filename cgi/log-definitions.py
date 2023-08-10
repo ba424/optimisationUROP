@@ -1,4 +1,4 @@
-#! C:\Users\user\AppData\Local\Microsoft\WindowsApps\python.exe
+#! C:\Users\user\AppData\Local\Programs\Python\Python311\python.exe
 import sys
 import json
 import cgi

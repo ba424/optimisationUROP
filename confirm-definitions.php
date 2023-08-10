@@ -111,6 +111,10 @@
             width: 20%;
             cursor:pointer;
         }
+
+        .button:active {
+            background-color: #009933;
+        }
     
         table, th, td {
             border: 1px solid;

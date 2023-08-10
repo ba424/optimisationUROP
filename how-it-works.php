@@ -69,6 +69,9 @@
             width: 40%;
             cursor:pointer;
         }
+        #start_button:active {
+            background-color: #009933;
+        }
         .mySlides {display: none;}
         
         img {

@@ -118,6 +118,9 @@
             width: 20%;
             cursor:pointer;
         }
+        #finish-objectives-button:active {
+            background-color: #009933;
+        }
     
         table, th, td {
             border: 1px solid;

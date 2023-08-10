@@ -129,6 +129,9 @@
             border-width: 1.5px;
             padding: 16px 16px;
         }
+        #start:active, #add-existing-solutions:active, #finish-solutions-button:active, #back-button:active {
+            background-color: #009933;
+        }
 
         table, th, td {
             border: 1px solid;
@@ -241,6 +244,7 @@
         function finishSolutions() {
             var noError = true;
             var newSolution = true;
+            var nextEvaluation = false;
             var goodSolutions = [];
             var badSolutions = [];
             // Register good solutions
@@ -316,7 +320,8 @@
                             'objective-min-max'  :String(objectiveMinMax),
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
-                            'new-solution'       :String(newSolution)},
+                            'new-solution'       :String(newSolution),
+                            'next-evaluation'    :String(nextEvaluation)},
                     success: function(result) {
                         submitReturned = true;
                         solution = result.solution
