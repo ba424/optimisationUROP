@@ -14,7 +14,7 @@
         <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 10px;">
                 <p class="parameter1"></p><p>1500</p>
                 <p class="parameter2"></p><p>10</p>
-                <p class="parameter3"></p><p>1</p>
+                <!-- <p class="parameter3"></p><p>1</p> -->
         </span>
     </div>
     <br>
@@ -45,7 +45,7 @@
                 <tr>  
                 <th class="parameter1"></th>  
                 <th class="parameter2"></th>  
-                <th class="parameter3"></th> 
+                <!-- <th class="parameter3"></th>  -->
                 <th class="delete"> Delete </th>   
                 </tr>  
             </thead>  
@@ -63,7 +63,7 @@
                 <tr>  
                 <th class="parameter1"></th>  
                 <th class="parameter2"></th>  
-                <th class="parameter3"></th> 
+                <!-- <th class="parameter3"></th>  -->
                 <th class="delete"> Delete </th>   
                 </tr>  
             </thead>  
@@ -190,12 +190,12 @@
         
         var paras1 = document.getElementsByClassName("parameter1");
         var paras2 = document.getElementsByClassName("parameter2");
-        var paras3 = document.getElementsByClassName("parameter3");
+        // var paras3 = document.getElementsByClassName("parameter3");
         
         for (i = 0; i < paras1.length; i++) {
             paras1[i].innerHTML = parameterNames[0];
             paras2[i].innerHTML = parameterNames[1];
-            paras3[i].innerHTML = parameterNames[2];
+            // paras3[i].innerHTML = parameterNames[2];
         }
 
         function addExistingSolutions() {
@@ -216,7 +216,7 @@
             htmlNewRow += "<tr>"
             htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter1'></td>"
             htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter2'></td>"
-            htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
+            // htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
             htmlNewRow += "<td id='record-data-buttons'>"
             htmlNewRow += "<button class='record-delete' id='record-delete'><img src='./Pictures/delete.png' style='width: 20px'></button>"
             htmlNewRow += "</td></tr>"
@@ -229,7 +229,7 @@
             htmlNewRow += "<tr>"
             htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter1'></td>"
             htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter2'></td>"
-            htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
+            // htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
             htmlNewRow += "<td id='record-data-buttons'>"
             htmlNewRow += "<button class='record-delete' id='record-delete'><img src='./Pictures/delete.png' style='width: 20px'></button>"
             htmlNewRow += "</td></tr>"
@@ -259,14 +259,14 @@
     
                 var goodSolParam1 = goodSolsRowEntries[0];
                 var goodSolParam2 = goodSolsRowEntries[1];
-                var goodSolParam3 = goodSolsRowEntries[2];
+                // var goodSolParam3 = goodSolsRowEntries[2];
                 console.log(goodSolParam1);
                 var validGoodSolParam1 = (!isNaN(parseFloat(goodSolParam1)) && isFinite(goodSolParam1));
                 var validGoodSolParam2 = (!isNaN(parseFloat(goodSolParam2)) && isFinite(goodSolParam2));
-                var validGoodSolParam3 = (!isNaN(parseFloat(goodSolParam3)) && isFinite(goodSolParam3));
+                // var validGoodSolParam3 = (!isNaN(parseFloat(goodSolParam3)) && isFinite(goodSolParam3));
 
-                if (validGoodSolParam1 && validGoodSolParam2 && validGoodSolParam3){
-                    var rowBounds = [parseFloat(goodSolParam1), parseFloat(goodSolParam2), parseFloat(goodSolParam3)];
+                if (validGoodSolParam1 && validGoodSolParam2 /*&& validGoodSolParam3*/){
+                    var rowBounds = [parseFloat(goodSolParam1), parseFloat(goodSolParam2)/*, parseFloat(goodSolParam3)*/];
                     goodSolutions.push(rowBounds);
                 }
                 else {
@@ -286,15 +286,15 @@
     
                 var badSolParam1 = badSolsRowEntries[0];
                 var badSolParam2 = badSolsRowEntries[1];
-                var badSolParam3 = badSolsRowEntries[2];
+                //var badSolParam3 = badSolsRowEntries[2];
                 console.log(badSolParam1);
 
                 var validBadSolParam1 = (!isNaN(parseFloat(badSolParam1)) && isFinite(badSolParam1));
                 var validBadSolParam2 = (!isNaN(parseFloat(badSolParam2)) && isFinite(badSolParam2));
-                var validBadSolParam3 = (!isNaN(parseFloat(badSolParam3)) && isFinite(badSolParam3));
+                //var validBadSolParam3 = (!isNaN(parseFloat(badSolParam3)) && isFinite(badSolParam3));
 
-                if (validBadSolParam1 && validBadSolParam2 && validBadSolParam3){
-                    var rowBounds = [parseFloat(badSolParam1), parseFloat(badSolParam2), parseFloat(badSolParam3)];
+                if (validBadSolParam1 && validBadSolParam2 /*&& validBadSolParam3*/){
+                    var rowBounds = [parseFloat(badSolParam1), parseFloat(badSolParam2)/*, parseFloat(badSolParam3)*/];
                     badSolutions.push(rowBounds);
                 }
                 else {

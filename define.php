@@ -33,11 +33,11 @@
                 <td contenteditable="true" class="record-data" id="record-parameter-lower-bound">3</td>
                 <td contenteditable="true" class="record-data" id="record-parameter-upper-bound">14</td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td contenteditable="true" class="record-data" id="record-parameter-name">Number of flight connections</td>
                 <td contenteditable="true" class="record-data" id="record-parameter-lower-bound">0</td>
                 <td contenteditable="true" class="record-data" id="record-parameter-upper-bound">3</td>
-            </tr>
+            </tr> -->
             </tbody>
         </table>
     </div>

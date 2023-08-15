@@ -4,12 +4,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-    <?php
-    // $one = htmlspecialchars($_GET["one"]);
-    // $two = htmlspecialchars($_GET["two"]);
-    
-    // echo "one: $one two: $two";
-    ?>
 
     <div id="background">
     
@@ -29,7 +23,7 @@
 
     <p class="parameter_1_mobo"></p>
     <p class="parameter_2_mobo"></p>
-    <p class="parameter_3_mobo"></p>
+    <!-- <p class="parameter_3_mobo"></p> -->
 
     
     <div id="options" style="display: inline-block; margin: 0 auto;">
@@ -101,17 +95,21 @@
         var goodSolutions = localStorage.getItem("good-solutions").split(",");
         var badSolutions = localStorage.getItem("bad-solutions").split(",");
         var solutionList = localStorage.getItem("solution-list").split(",");
-
-        console.log(solutionList);
         
+        try {var objectivesInput = localStorage.getItem("objectives-input").split(",");}
+        catch(err) {}
+        
+        console.log(solutionList);
+        console.log(objectivesInput);
+
         var paras1 = document.getElementsByClassName("parameter_1_mobo");
         var paras2 = document.getElementsByClassName("parameter_2_mobo");
-        var paras3 = document.getElementsByClassName("parameter_3_mobo");
+        // var paras3 = document.getElementsByClassName("parameter_3_mobo");
         
         for (i = 0; i < paras1.length; i++) {
-            paras1[i].innerHTML = parameterNames[0] + " =  " + solutionList[solutionList.length-3];
-            paras2[i].innerHTML = parameterNames[1] + " =  " + solutionList[solutionList.length-2];
-            paras3[i].innerHTML = parameterNames[2] + " =  " + solutionList[solutionList.length-1];
+            paras1[i].innerHTML = parameterNames[0] + " =  " + solutionList[solutionList.length-2];
+            paras2[i].innerHTML = parameterNames[1] + " =  " + solutionList[solutionList.length-1];
+            //  paras3[i].innerHTML = parameterNames[2] + " =  " + solutionList[solutionList.length-1];
         }
         
         // Individual solutions
@@ -149,9 +147,11 @@
                 success: function(result) {
                     submitReturned = true;
                     solutionList = result.solution
+                    objectivesInput = result.objectives
                     console.log(result.solution)
                     console.log(result.solution_normalised)
                     localStorage.setItem("solution-list", solutionList);
+                    localStorage.setItem("objectives-input", objectivesInput);
                     console.log("Success");
                     var url = "optimise.php";
                     location.href = url;
@@ -246,6 +246,7 @@
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
+                            'objectives-input'   :String(objectivesInput),
 
                             'new-solution'       :String(callNewSolution),
                             'next-evaluation'    :String(callNextEvaluation),
@@ -257,9 +258,11 @@
                     success: function(result) {
                         submitReturned = true;
                         solutionList = result.solution
+                        objectivesInput = result.objectives
                         console.log(result.solution)
-                        console.log(result.solution_normalised)
+                        console.log(result.objectives)
                         localStorage.setItem("solution-list", solutionList);
+                        localStorage.setItem("objectives-input", objectivesInput)
                         console.log("Success")
                         var url = "optimise.php";
                         location.href = url;

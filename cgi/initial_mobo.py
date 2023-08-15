@@ -48,6 +48,10 @@ try:
     currentSolutions = (formData['current-solutions'].value).split(',')
 except:
     pass
+try:
+    objectivesInput = (formData['objectives-input'].value).split(',')
+except:
+    objectivesInput = []
 
 newSolution = (formData['new-solution'].value).split(',')
 nextEvaluation = (formData['next-evaluation'].value).split(',')
@@ -82,7 +86,6 @@ objective_bounds = torch.zeros(2, 2)
 for i in range(2):
     objective_bounds[0][i] = float(objectiveBounds[2*i])
     objective_bounds[1][i] = float(objectiveBounds[2*i + 1])
-    
 
 def unnormalise_parameters(x_tensor):
     x_bounds = parameter_bounds
@@ -93,21 +96,23 @@ def unnormalise_parameters(x_tensor):
 
 def normalise_parameters(x_tensor):
     x_bounds = parameter_bounds
-    x_norm = torch.zeros(1, num_parameters, dtype=torch.float64)
-    for i in range(num_parameters):
-        x_norm[0][i] = (x_tensor[0][i] - x_bounds[0][i])/(x_bounds[1][i] - x_bounds[0][i]) 
+    x_norm = torch.zeros(x_tensor.size(), dtype=torch.float64)
+    for j in range(x_tensor.size()[0]): # TESTING INDEX ERROR
+        for i in range(x_tensor.size()[1]):
+            x_norm[j][i] = (x_tensor[j][i] - x_bounds[0][i])/(x_bounds[1][i] - x_bounds[0][i]) 
     return x_norm
 
 def normalise_objectives(obj_tensor_actual):
     objectives_min_max = objectiveMinMax
     obj_tensor_norm = torch.zeros(obj_tensor_actual.size(), dtype=torch.float64)
-    for i in range (obj_tensor_actual.size()[1]):
-      if (objectives_min_max[i] == "minimise"): # MINIMISE (SMALLER VALUES CLOSER TO 1)
-        obj_tensor_norm[0][i] = -2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) + 1
-      elif (objectives_min_max[i] == "maximise"): # MAXIMISE (LARGER VALUES CLOSER TO -1)
-        obj_tensor_norm[0][i] =  2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) - 1
-
+    for j in range(obj_tensor_actual.size()[0]):
+        for i in range (obj_tensor_actual.size()[1]):
+            if (objectives_min_max[i] == "minimise"): # MINIMISE (SMALLER VALUES CLOSER TO 1)
+                obj_tensor_norm[j][i] = -2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) + 1
+            elif (objectives_min_max[i] == "maximise"): # MAXIMISE (LARGER VALUES CLOSER TO -1)
+                obj_tensor_norm[j][i] =  2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) - 1
     return obj_tensor_norm
+
 # generate training data
 def generate_initial_data(n_samples=1):
     # generate training data
@@ -159,14 +164,30 @@ if (newSolution[0]=="true"):
     solutionsList.append(train_x_actual.tolist()[0])
     reply = {}
     reply['solution'] = solutionsList
-    reply['newSolution'] = newSolution
+    # reply['newSolution'] = newSolution
+    reply['objectives'] = objectivesInput
 
 if (nextEvaluation[0] == "true"):
-    train_obj_actual = torch.tensor([[obj1, obj2]], dtype=torch.float64)
+    for i in range(len(currentSolutions)):
+        currentSolutions[i] = float(currentSolutions[i])
+
+    # train_obj_actual = torch.tensor([[obj1, obj2]], dtype=torch.float64)
+    if (len(objectivesInput) != 0):
+        objectivesInputPlaceholder = []
+        for i in range(int(len(objectivesInput)/2)):
+            objectivesInputPlaceholder.append([float(objectivesInput[2*i]), float(objectivesInput[2*i+1])])
+        objectivesInput = objectivesInputPlaceholder
+    objectivesInput.append([obj1, obj2])
+    train_obj_actual = torch.tensor(objectivesInput, dtype=torch.float64)
     train_obj = normalise_objectives(train_obj_actual)
-    train_x_actual = torch.zeros(1,num_parameters, dtype=torch.float64)
-    for i in range(1, num_parameters+1):
-        train_x_actual[0][-1*i] = float(currentSolutions[-1*i])
+   
+    parametersPlaceholder = []
+    for i in range(int(len(currentSolutions)/num_parameters)):
+        parametersPlaceholder.append(currentSolutions[i*num_parameters:i*num_parameters+num_parameters])
+    train_x_actual = torch.tensor(parametersPlaceholder, dtype=torch.float64)
+    # train_x_actual = torch.zeros(1,num_parameters, dtype=torch.float64)
+    # for i in range(1, num_parameters+1):
+    #     train_x_actual[0][-1*i] = float(currentSolutions[-1*i])
     train_x = normalise_parameters(train_x_actual)
 
     torch.manual_seed(SEED)
@@ -188,7 +209,7 @@ if (nextEvaluation[0] == "true"):
     qehvi_sampler = SobolQMCNormalSampler(num_samples=MC_SAMPLES)
     # Optimize acquisition functions and get new observations
     new_x, new_x_actual = optimize_qehvi(model, train_obj, qehvi_sampler)
-    
+    new_x_actual = torch.round(new_x_actual)
     # Update training points
     train_x = torch.cat([train_x, new_x])
     train_x_actual = torch.cat([train_x_actual, new_x_actual])
@@ -198,6 +219,7 @@ if (nextEvaluation[0] == "true"):
     currentSolutions.append(train_x_actual.tolist()[-1])
     reply = {}
     reply['solution'] = currentSolutions
+    reply['objectives'] = objectivesInput
     reply['solution_normalised'] = train_x.tolist()
 
 def mobo_execute(seed, iterations, initial_samples):
