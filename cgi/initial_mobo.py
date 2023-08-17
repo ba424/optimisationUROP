@@ -43,7 +43,7 @@ except:
 try:
     badSolutions = (formData['bad-solutions'].value).split(',')
 except:
-    pass
+    badSolutions = []
 try:
     currentSolutions = (formData['current-solutions'].value).split(',')
 except:
@@ -70,10 +70,10 @@ except:
     pass
 
 
-
 num_parameters = len(parameterNames)
 parameter_bounds = torch.zeros(2, num_parameters)
 parameter_bounds_normalised = torch.zeros(2, num_parameters)
+bad_solutions = badSolutions
 
 for i in range(num_parameters):
     parameter_bounds[0][i] = float(parameterBounds[2*i])
@@ -113,6 +113,14 @@ def normalise_objectives(obj_tensor_actual):
                 obj_tensor_norm[j][i] =  2*((obj_tensor_actual[0][i] - objective_bounds[0][i])/(objective_bounds[1][i] - objective_bounds[0][i])) - 1
     return obj_tensor_norm
 
+def checkForbiddenRegions(bad_solutions, proposed_solution): # +/- 5% of bad solution parameters
+  for i in range(len(bad_solutions)):
+    # print(proposed_solution[0][1])
+    # print(bad_solutions[i][0])
+    if (proposed_solution[0][0] < float(bad_solutions[i][0])*1.05 and proposed_solution[0][0] > float(bad_solutions[i][0])*0.95 and proposed_solution[0][1] < float(bad_solutions[i][1])*1.05 and proposed_solution[0][1] > float(bad_solutions[i][1])*0.95):
+      return False
+  return True
+
 # generate training data
 def generate_initial_data(n_samples=1):
     # generate training data
@@ -122,6 +130,14 @@ def generate_initial_data(n_samples=1):
     train_x = train_x.type(torch.DoubleTensor)
     train_x_actual = torch.round(unnormalise_parameters(train_x))
     # print("Initial solution: ", train_x_actual)
+    while (checkForbiddenRegions(bad_solutions, train_x_actual) == False):
+        # print("Proposed solution in forbidden region")
+        train_x = draw_sobol_samples(
+            bounds=problem_bounds, n=1, q=n_samples, seed=torch.randint(1000000, (1,)).item()
+        ).squeeze(0)
+        train_x = train_x.type(torch.DoubleTensor)
+        train_x_actual = unnormalise_parameters(train_x)
+        # print("Initial solution: ", train_x_actual)
     # train_obj_actual, train_obj = objective_function(train_x_actual)
 
     return train_x, train_x_actual
@@ -156,6 +172,12 @@ def optimize_qehvi(model, train_obj, sampler):
     new_x =  unnormalize(candidates.detach(), bounds=parameter_bounds_normalised)
     new_x_actual = unnormalise_parameters(new_x)
 
+    if (checkForbiddenRegions(bad_solutions, new_x_actual) == False):
+        # print("Solution proposed within forbidden region")
+        # new_x =  unnormalize(candidates.detach(), bounds=problem_bounds)
+        # new_x_actual = unnormalise_parameters(new_x)
+        new_x, new_x_actual = generate_initial_data()
+        # print("Next solution: ", new_x_actual)
     return new_x, new_x_actual
 
 if (newSolution[0]=="true"):
@@ -166,6 +188,7 @@ if (newSolution[0]=="true"):
     reply['solution'] = solutionsList
     # reply['newSolution'] = newSolution
     reply['objectives'] = objectivesInput
+    reply['bad_solutions'] = badSolutions
 
 if (nextEvaluation[0] == "true"):
     for i in range(len(currentSolutions)):
@@ -221,6 +244,7 @@ if (nextEvaluation[0] == "true"):
     reply['solution'] = currentSolutions
     reply['objectives'] = objectivesInput
     reply['solution_normalised'] = train_x.tolist()
+    reply['bad_solutions'] = badSolutions
 
 def mobo_execute(seed, iterations, initial_samples):
     torch.manual_seed(seed)

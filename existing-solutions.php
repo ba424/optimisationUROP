@@ -309,6 +309,8 @@
                 localStorage.setItem("good-solutions", goodSolutions);
                 localStorage.setItem("bad-solutions", badSolutions);
                 localStorage.setItem("new-solution", newSolution);
+                localStorage.setItem("next-evaluation", nextEvaluation);
+
                 $.ajax({
                     url: "../Demo/cgi/initial_mobo.py",
                     type: "post",
@@ -325,7 +327,10 @@
                     success: function(result) {
                         submitReturned = true;
                         solution = result.solution
-                        localStorage.setItem("solution", solution);
+                        objectivesInput = result.objectives;
+                        localStorage.setItem("solution-list", solution);
+                        localStorage.setItem("objectives-input", objectivesInput);
+                        console.log(solution);
                         console.log("Success");
                         var url = "optimise.php";
                         location.href = url;

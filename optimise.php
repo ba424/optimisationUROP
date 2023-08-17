@@ -120,6 +120,7 @@
         function newSolution() {
             callNewSolution = true;
             callNextEvaluation = false;
+            // badSolutions.push(solutionList[solutionList.length-2], solutionList[solutionList.length-1])
             // Placeholders
             solutionName = "";
             obj1 = "";
@@ -146,12 +147,14 @@
 
                 success: function(result) {
                     submitReturned = true;
-                    solutionList = result.solution
-                    objectivesInput = result.objectives
-                    console.log(result.solution)
-                    console.log(result.solution_normalised)
+                    solutionList = result.solution;
+                    objectivesInput = result.objectives;
+                    badSolutions = result.bad_solutions;
+                    console.log(result.solution);
+                    console.log(result.solution_normalised);
                     localStorage.setItem("solution-list", solutionList);
                     localStorage.setItem("objectives-input", objectivesInput);
+                    localStorage.setItem("bad-solutions", badSolutions);
                     console.log("Success");
                     var url = "optimise.php";
                     location.href = url;
@@ -262,8 +265,9 @@
                         console.log(result.solution)
                         console.log(result.objectives)
                         localStorage.setItem("solution-list", solutionList);
-                        localStorage.setItem("objectives-input", objectivesInput)
-                        console.log("Success")
+                        localStorage.setItem("objectives-input", objectivesInput);
+                        localStorage.setItem("bad-solutions", badSolutions);
+                        console.log("Success");
                         var url = "optimise.php";
                         location.href = url;
                     },
