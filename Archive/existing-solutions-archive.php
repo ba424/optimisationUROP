@@ -8,7 +8,7 @@
     <div id="background">
     
     <h1>One question before we start…</h1>
-    <p><i>Are there known bad solutions we should include?</i></p>
+    <p><i>Are there known good/bad solutions we should include?</i></p>
     
     <div class="tooltip">For example
         <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 10px;">
@@ -19,7 +19,7 @@
     </div>
     <br>
     <br>
- 
+    <br>
     <div id="buttons" style="display:block">
         <div class="add-existing-solutions">
             <button id="add-existing-solutions" onclick="addExistingSolutions()">Yes, some</button>
@@ -39,14 +39,14 @@
     </div>
 
     <div id="add-solutions" style="display:none">
-        <!-- <table id="good-solutions-table" class="good-solutions-table" width="100%">
+        <table id="good-solutions-table" class="good-solutions-table" width="100%">
             <caption><b>Good Solutions</b></caption>
             <thead>  
                 <tr>  
                 <th class="parameter1"></th>  
-                <th class="parameter2"></th> -->  
+                <th class="parameter2"></th>  
                 <!-- <th class="parameter3"></th>  -->
-                <!-- <th class="delete"> Delete </th>   
+                <th class="delete"> Delete </th>   
                 </tr>  
             </thead>  
             <tbody>
@@ -55,8 +55,8 @@
 
         <div style="text-align: center;">
             <button class="button" id="add-record-button" onclick="addGoodSolutionsTable()">Add Good Solution</button>
-        </div> 
-        <br> -->
+        </div>
+        <br>
         <table id="bad-solutions-table" class="bad-solutions-table" width="100%">
             <caption><b>Bad Solutions</b></caption>
             <thead>  
@@ -211,18 +211,18 @@
             }
         }
 
-        // function addGoodSolutionsTable(){
-        //     var htmlNewRow = ""
-        //     htmlNewRow += "<tr>"
-        //     htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter1'></td>"
-        //     htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter2'></td>"
-        //     // htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
-        //     htmlNewRow += "<td id='record-data-buttons'>"
-        //     htmlNewRow += "<button class='record-delete' id='record-delete'><img src='./Pictures/delete.png' style='width: 20px'></button>"
-        //     htmlNewRow += "</td></tr>"
-        //     $("#good-solutions-table", window.document).append(htmlNewRow);  
-        //     $(window.document).on('click', ".record-delete", deleteParameterTable);
-        // }
+        function addGoodSolutionsTable(){
+            var htmlNewRow = ""
+            htmlNewRow += "<tr>"
+            htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter1'></td>"
+            htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter2'></td>"
+            // htmlNewRow += "<td contenteditable='true' class='record-data' id='parameter3'></td>"
+            htmlNewRow += "<td id='record-data-buttons'>"
+            htmlNewRow += "<button class='record-delete' id='record-delete'><img src='./Pictures/delete.png' style='width: 20px'></button>"
+            htmlNewRow += "</td></tr>"
+            $("#good-solutions-table", window.document).append(htmlNewRow);  
+            $(window.document).on('click', ".record-delete", deleteParameterTable);
+        }
 
         function addBadSolutionsTable(){
             var htmlNewRow = ""
@@ -245,35 +245,34 @@
             var noError = true;
             var newSolution = true;
             var nextEvaluation = false;
-            var refineSolution = false;
             var goodSolutions = [];
             var badSolutions = [];
             // Register good solutions
-            // var tableGoodSols = $("#good-solutions-table tbody");
-            // tableGoodSols.find('tr').each(function() {
-            //     var $goodSolsCols = $(this).find("td");
-            //     var goodSolsRowEntries = [];
+            var tableGoodSols = $("#good-solutions-table tbody");
+            tableGoodSols.find('tr').each(function() {
+                var $goodSolsCols = $(this).find("td");
+                var goodSolsRowEntries = [];
     
-            //     $.each($goodSolsCols, function() {
-            //         goodSolsRowEntries.push($(this).text());
-            //     });
+                $.each($goodSolsCols, function() {
+                    goodSolsRowEntries.push($(this).text());
+                });
     
-            //     var goodSolParam1 = goodSolsRowEntries[0];
-            //     var goodSolParam2 = goodSolsRowEntries[1];
-            //     // var goodSolParam3 = goodSolsRowEntries[2];
-            //     console.log(goodSolParam1);
-            //     var validGoodSolParam1 = (!isNaN(parseFloat(goodSolParam1)) && isFinite(goodSolParam1) && parseFloat(goodSolParam1) >= parseFloat(parameterBounds[0]) && parseFloat(goodSolParam1) <= parseFloat(parameterBounds[1]));
-            //     var validGoodSolParam2 = (!isNaN(parseFloat(goodSolParam2)) && isFinite(goodSolParam2) && parseFloat(goodSolParam2) >= parseFloat(parameterBounds[2]) && parseFloat(goodSolParam2) <= parseFloat(parameterBounds[3]));
-            //     // var validGoodSolParam3 = (!isNaN(parseFloat(goodSolParam3)) && isFinite(goodSolParam3));
+                var goodSolParam1 = goodSolsRowEntries[0];
+                var goodSolParam2 = goodSolsRowEntries[1];
+                // var goodSolParam3 = goodSolsRowEntries[2];
+                console.log(goodSolParam1);
+                var validGoodSolParam1 = (!isNaN(parseFloat(goodSolParam1)) && isFinite(goodSolParam1) && parseFloat(goodSolParam1) >= parseFloat(parameterBounds[0]) && parseFloat(goodSolParam1) <= parseFloat(parameterBounds[1]));
+                var validGoodSolParam2 = (!isNaN(parseFloat(goodSolParam2)) && isFinite(goodSolParam2) && parseFloat(goodSolParam2) >= parseFloat(parameterBounds[2]) && parseFloat(goodSolParam2) <= parseFloat(parameterBounds[3]));
+                // var validGoodSolParam3 = (!isNaN(parseFloat(goodSolParam3)) && isFinite(goodSolParam3));
 
-            //     if (validGoodSolParam1 && validGoodSolParam2 /*&& validGoodSolParam3*/){
-            //         var rowBounds = [parseFloat(goodSolParam1), parseFloat(goodSolParam2)/*, parseFloat(goodSolParam3)*/];
-            //         goodSolutions.push(rowBounds);
-            //     }
-            //     else {
-            //         noError = false;
-            //     }
-            // });
+                if (validGoodSolParam1 && validGoodSolParam2 /*&& validGoodSolParam3*/){
+                    var rowBounds = [parseFloat(goodSolParam1), parseFloat(goodSolParam2)/*, parseFloat(goodSolParam3)*/];
+                    goodSolutions.push(rowBounds);
+                }
+                else {
+                    noError = false;
+                }
+            });
             
             // Register bad solutions
             var tableBadSols = $("#bad-solutions-table tbody");
@@ -303,7 +302,7 @@
                 }
             });
 
-            //console.log(goodSolutions);
+            console.log(goodSolutions);
             console.log(badSolutions);
 
             if (noError){
@@ -324,8 +323,7 @@
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
                             'new-solution'       :String(newSolution),
-                            'next-evaluation'    :String(nextEvaluation),
-                            'refine-solution'    :String(refineSolution)},
+                            'next-evaluation'    :String(nextEvaluation)},
                     success: function(result) {
                         submitReturned = true;
                         solution = result.solution

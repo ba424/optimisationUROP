@@ -242,8 +242,13 @@ def mobo_execute(seed, iterations, initial_samples):
     return hvs_qehvi, train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi
 
 
-bad_solutions = [[500, 3], [3000, 14], [3000, 3], [500, 14]]
-hvs_qehvi, train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi = mobo_execute(SEED, 5, 1)
+badSolutions = [500, 3, 3000, 14, 3000, 3, 500, 14]
+num_parameters = 2
+bad_solutions = []
+for i in range(int(len(badSolutions)/num_parameters)):
+    bad_solutions.append(badSolutions[i*num_parameters:i*num_parameters+num_parameters])
+print(bad_solutions)
+# hvs_qehvi, train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi = mobo_execute(SEED, 5, 1)
 
 # train_x, train_x_actual, train_obj, train_obj_actual = generate_initial_data()
 # mll, model = initialize_model(train_x, train_obj)

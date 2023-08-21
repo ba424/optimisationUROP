@@ -101,6 +101,7 @@
         
         console.log(solutionList);
         console.log(objectivesInput);
+        console.log(badSolutions);
 
         var paras1 = document.getElementsByClassName("parameter_1_mobo");
         var paras2 = document.getElementsByClassName("parameter_2_mobo");
@@ -120,6 +121,7 @@
         function newSolution() {
             callNewSolution = true;
             callNextEvaluation = false;
+            callRefineSolution = false;
             // badSolutions.push(solutionList[solutionList.length-2], solutionList[solutionList.length-1])
             // Placeholders
             solutionName = "";
@@ -137,9 +139,11 @@
                         
                         'good-solutions'     :String(goodSolutions),
                         'bad-solutions'      :String(badSolutions),
+                        'current-solutions'  :String(solutionList),
                         
                         'new-solution'       :String(callNewSolution),
                         'next-evaluation'    :String(callNextEvaluation),
+                        'refine-solution'    :String(callRefineSolution),
                         
                         'solution-name'      :String(solutionName),
                         'objective-1'        :String(obj1),
@@ -208,6 +212,7 @@
 
             callNewSolution = false;
             callNextEvaluation = true;
+            callRefineSolution = false;
 
             var solutionName = document.getElementById("solution_name").value;
             var obj1 = document.getElementById("obj1").value;
@@ -253,6 +258,7 @@
 
                             'new-solution'       :String(callNewSolution),
                             'next-evaluation'    :String(callNextEvaluation),
+                            'refine-solution'    :String(callRefineSolution),
 
                             'solution-name'      :String(solutionName),
                             'objective-1'        :String(obj1),
@@ -262,6 +268,92 @@
                         submitReturned = true;
                         solutionList = result.solution
                         objectivesInput = result.objectives
+                        badSolutions = result.bad_solutions;
+                        new_x = result.new_x
+                        console.log(new_x)
+                        console.log(result.solution)
+                        console.log(result.objectives)
+                        localStorage.setItem("solution-list", solutionList);
+                        localStorage.setItem("objectives-input", objectivesInput);
+                        localStorage.setItem("bad-solutions", badSolutions);
+                        console.log("Success");
+                        var url = "optimise.php";
+                        location.href = url;
+                    },
+                    error: function(result){
+                        console.log("Error in finishing experiment: " + result.message);
+                    }
+                });
+            }
+            else {
+                alert("Invalid entry");
+            }  
+        }
+
+        function refineSolution() {
+            noError = true;
+
+            callNewSolution = false;
+            callNextEvaluation = false;
+            callRefineSolution = true;
+
+            var solutionName = document.getElementById("solution_name").value;
+            var obj1 = document.getElementById("obj1").value;
+            var obj2 = document.getElementById("obj2").value;
+            
+            console.log(solutionName, obj1, obj2);
+
+            var validObj1 = (!isNaN(parseFloat(obj1)) && isFinite(obj1)
+                && parseFloat(obj1) >= objectiveBounds[0] && parseFloat(obj1) <= objectiveBounds[1]);
+            var validObj2 = (!isNaN(parseFloat(obj2)) && isFinite(obj2)
+                && parseFloat(obj2) >= objectiveBounds[2] && parseFloat(obj2) <= objectiveBounds[3]);
+
+            if (validObj1 && validObj2) {
+                noError = true;
+            }
+            else {
+                noError = false;
+            }
+
+            if (/^[A-Za-z0-9]+$/.test(solutionName) == false){
+                noError = false;
+            }
+
+            if (noError) {
+                localStorage.setItem("solution-name", solutionName);
+                localStorage.setItem("objective-1", obj1);
+                localStorage.setItem("objective-2", obj2);
+    
+                $.ajax({
+                    url: "../Demo/cgi/initial_mobo.py",
+                    type: "post",
+                    datatype: "json",
+                    data: { 'parameter-names'    :String(parameterNames),
+                            'parameter-bounds'   :String(parameterBounds),
+                            'objective-names'    :String(objectiveNames), 
+                            'objective-bounds'   :String(objectiveBounds),
+                            'objective-min-max'  :String(objectiveMinMax),
+
+                            'good-solutions'     :String(goodSolutions),
+                            'bad-solutions'      :String(badSolutions),
+                            'current-solutions'  :String(solutionList),
+                            'objectives-input'   :String(objectivesInput),
+
+                            'new-solution'       :String(callNewSolution),
+                            'next-evaluation'    :String(callNextEvaluation),
+                            'refine-solution'    :String(callRefineSolution),
+
+                            'solution-name'      :String(solutionName),
+                            'objective-1'        :String(obj1),
+                            'objective-2'        :String(obj2) },
+
+                    success: function(result) {
+                        submitReturned = true;
+                        solutionList = result.solution
+                        objectivesInput = result.objectives
+                        badSolutions = result.bad_solutions;
+                        new_x = result.new_x
+                        console.log(new_x)
                         console.log(result.solution)
                         console.log(result.objectives)
                         localStorage.setItem("solution-list", solutionList);
