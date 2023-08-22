@@ -45,9 +45,7 @@
     </div>
     <br>
     <div class="done-button" style="text-align: right;">
-        <form action="/Demo/results.php" id="done-button">
-            <button class="button" id="done" type="submit">I'm done</button>
-        </form>
+        <button class="button" id="done" onclick="finishSolutions()">I'm done</button>    
     </div>
 
     </div>
@@ -95,13 +93,17 @@
         var goodSolutions = localStorage.getItem("good-solutions").split(",");
         var badSolutions = localStorage.getItem("bad-solutions").split(",");
         var solutionList = localStorage.getItem("solution-list").split(",");
+        var savedSolutions = localStorage.getItem("saved-solutions").split(",");
         
+        var num_parameters = parameterNames.length
+
         try {var objectivesInput = localStorage.getItem("objectives-input").split(",");}
         catch(err) {}
         
-        console.log(solutionList);
-        console.log(objectivesInput);
-        console.log(badSolutions);
+        console.log("Current solutions: " + solutionList);
+        console.log("Objectives input: " + objectivesInput);
+        console.log("Bad solutions: " + badSolutions);
+        console.log("Saved solutions: " + savedSolutions);
 
         var paras1 = document.getElementsByClassName("parameter_1_mobo");
         var paras2 = document.getElementsByClassName("parameter_2_mobo");
@@ -140,6 +142,7 @@
                         'good-solutions'     :String(goodSolutions),
                         'bad-solutions'      :String(badSolutions),
                         'current-solutions'  :String(solutionList),
+                        'saved-solutions'    :String(savedSolutions),
                         
                         'new-solution'       :String(callNewSolution),
                         'next-evaluation'    :String(callNextEvaluation),
@@ -154,11 +157,13 @@
                     solutionList = result.solution;
                     objectivesInput = result.objectives;
                     badSolutions = result.bad_solutions;
+                    savedSolutions = result.saved_solutions;
                     console.log(result.solution);
                     console.log(result.solution_normalised);
                     localStorage.setItem("solution-list", solutionList);
                     localStorage.setItem("objectives-input", objectivesInput);
                     localStorage.setItem("bad-solutions", badSolutions);
+                    localStorage.setItem("saved-solutions", savedSolutions);
                     console.log("Success");
                     var url = "optimise.php";
                     location.href = url;
@@ -254,6 +259,7 @@
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
+                            'saved-solutions'    :String(savedSolutions),
                             'objectives-input'   :String(objectivesInput),
 
                             'new-solution'       :String(callNewSolution),
@@ -266,16 +272,16 @@
 
                     success: function(result) {
                         submitReturned = true;
-                        solutionList = result.solution
-                        objectivesInput = result.objectives
+                        solutionList = result.solution;
+                        objectivesInput = result.objectives;
                         badSolutions = result.bad_solutions;
-                        new_x = result.new_x
-                        console.log(new_x)
-                        console.log(result.solution)
-                        console.log(result.objectives)
+                        savedSolutions = result.saved_solutions;
+                        
                         localStorage.setItem("solution-list", solutionList);
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("bad-solutions", badSolutions);
+                        localStorage.setItem("saved-solutions", savedSolutions);
+
                         console.log("Success");
                         var url = "optimise.php";
                         location.href = url;
@@ -337,6 +343,7 @@
                             'good-solutions'     :String(goodSolutions),
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
+                            'saved-solutions'    :String(savedSolutions),
                             'objectives-input'   :String(objectivesInput),
 
                             'new-solution'       :String(callNewSolution),
@@ -352,6 +359,8 @@
                         solutionList = result.solution
                         objectivesInput = result.objectives
                         badSolutions = result.bad_solutions;
+                        savedSolutions = result.saved_solutions;
+
                         new_x = result.new_x
                         console.log(new_x)
                         console.log(result.solution)
@@ -359,6 +368,8 @@
                         localStorage.setItem("solution-list", solutionList);
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("bad-solutions", badSolutions);
+                        localStorage.setItem("saved-solutions", savedSolutions);
+
                         console.log("Success");
                         var url = "optimise.php";
                         location.href = url;
@@ -370,6 +381,64 @@
             }
             else {
                 alert("Invalid entry");
+            }  
+        }
+
+
+        function finishSolutions() {
+            noError = true;
+            
+            if (savedSolutions.length/num_parameters < 3) {
+                noError = false;
+            }
+
+            if (noError) {
+                $.ajax({
+                    url: "../Demo/cgi/finish-solutions.py",
+                    type: "post",
+                    datatype: "json",
+                    data: { 'parameter-names'    :String(parameterNames),
+                            'parameter-bounds'   :String(parameterBounds),
+                            'objective-names'    :String(objectiveNames), 
+                            'objective-bounds'   :String(objectiveBounds),
+                            'objective-min-max'  :String(objectiveMinMax),
+
+                            'good-solutions'     :String(goodSolutions),
+                            'bad-solutions'      :String(badSolutions),
+                            'current-solutions'  :String(solutionList),
+                            'saved-solutions'    :String(savedSolutions),
+                            'objectives-input'   :String(objectivesInput)},
+
+                    success: function(result) {
+                        submitReturned = true;
+                        // solutionList = result.solution;
+                        // badSolutions = result.bad_solutions;
+                        objectivesInput = result.objectives;
+                        savedSolutions = result.saved_solutions;
+                        objectivesNormalised = result.objectives_normalised;
+                        bestSolutions = result.best_solutions;
+                        console.log(objectivesInput);
+                        console.log(savedSolutions);
+                        console.log(objectivesNormalised);
+                        console.log(bestSolutions)
+                        // localStorage.setItem("solution-list", solutionList);
+                        // localStorage.setItem("bad-solutions", badSolutions);
+                        localStorage.setItem("objectives-input", objectivesInput);
+                        localStorage.setItem("saved-solutions", savedSolutions);
+                        localStorage.setItem("objectives-normalised", objectivesNormalised);
+                        localStorage.setItem("best-solutions", bestSolutions);
+
+                        console.log("Success");
+                        var url = "results.php";
+                        location.href = url;
+                    },
+                    error: function(result){
+                        console.log("Error in finishing experiment: " + result.message);
+                    }
+                });
+            }
+            else {
+                alert("Please ensure you have evaluated at least 3 solutions");
             }  
         }
 

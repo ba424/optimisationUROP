@@ -328,10 +328,12 @@
                             'refine-solution'    :String(refineSolution)},
                     success: function(result) {
                         submitReturned = true;
-                        solution = result.solution
+                        solution = result.solution;
                         objectivesInput = result.objectives;
+                        savedSolutions = result.saved_solutions;
                         localStorage.setItem("solution-list", solution);
                         localStorage.setItem("objectives-input", objectivesInput);
+                        localStorage.setItem("saved-solutions", savedSolutions);
                         console.log(solution);
                         console.log("Success");
                         var url = "optimise.php";
