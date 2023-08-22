@@ -331,9 +331,11 @@
                         solution = result.solution;
                         objectivesInput = result.objectives;
                         savedSolutions = result.saved_solutions;
+                        savedObjectives = result.saved_objectives
                         localStorage.setItem("solution-list", solution);
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("saved-solutions", savedSolutions);
+                        localStorage.setItem("saved-objectives", savedObjectives);
                         console.log(solution);
                         console.log("Success");
                         var url = "optimise.php";

@@ -53,6 +53,10 @@ try:
 except:
     savedSolutions = []
 try:
+    savedObjectives = (formData['saved-objectives'].value).split(',')
+except:
+    savedObjectives = []
+try:
     objectivesInput = (formData['objectives-input'].value).split(',')
 except:
     objectivesInput = []
@@ -210,6 +214,7 @@ if (newSolution[0]=="true"):
     reply['objectives'] = objectivesInput
     reply['bad_solutions'] = bad_solutions
     reply['saved_solutions'] = savedSolutions
+    reply['saved_objectives'] = savedObjectives
 
 if (nextEvaluation[0] == "true"):
     for i in range(len(currentSolutions)):
@@ -222,6 +227,7 @@ if (nextEvaluation[0] == "true"):
             objectivesInputPlaceholder.append([float(objectivesInput[2*i]), float(objectivesInput[2*i+1])])
         objectivesInput = objectivesInputPlaceholder
     objectivesInput.append([obj1, obj2])
+    savedObjectives.append([obj1, obj2])
     train_obj_actual = torch.tensor(objectivesInput, dtype=torch.float64)
     train_obj = normalise_objectives(train_obj_actual)
    
@@ -270,6 +276,7 @@ if (nextEvaluation[0] == "true"):
     reply['solution_normalised'] = train_x.tolist()
     reply['bad_solutions'] = bad_solutions
     reply['saved_solutions'] = savedSolutions
+    reply['saved_objectives'] = savedObjectives
 
 
 if (refineSolution[0] == "true"):
@@ -283,6 +290,7 @@ if (refineSolution[0] == "true"):
             objectivesInputPlaceholder.append([float(objectivesInput[2*i]), float(objectivesInput[2*i+1])])
         objectivesInput = objectivesInputPlaceholder
     objectivesInput.append([obj1, obj2])
+    savedObjectives.append([obj1, obj2])
     train_obj_actual = torch.tensor(objectivesInput, dtype=torch.float64)
     train_obj = normalise_objectives(train_obj_actual)
    
@@ -340,6 +348,7 @@ if (refineSolution[0] == "true"):
     reply['solution_normalised'] = train_x.tolist()
     reply['bad_solutions'] = bad_solutions
     reply['saved_solutions'] = savedSolutions
+    reply['saved_objectives'] = savedObjectives
 
 def mobo_execute(seed, iterations, initial_samples):
     torch.manual_seed(seed)

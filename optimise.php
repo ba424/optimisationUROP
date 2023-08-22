@@ -94,6 +94,7 @@
         var badSolutions = localStorage.getItem("bad-solutions").split(",");
         var solutionList = localStorage.getItem("solution-list").split(",");
         var savedSolutions = localStorage.getItem("saved-solutions").split(",");
+        var savedObjectives = localStorage.getItem("saved-objectives").split(",");
         
         var num_parameters = parameterNames.length
 
@@ -104,6 +105,7 @@
         console.log("Objectives input: " + objectivesInput);
         console.log("Bad solutions: " + badSolutions);
         console.log("Saved solutions: " + savedSolutions);
+        console.log("Saved objectives: " + savedObjectives);
 
         var paras1 = document.getElementsByClassName("parameter_1_mobo");
         var paras2 = document.getElementsByClassName("parameter_2_mobo");
@@ -143,6 +145,7 @@
                         'bad-solutions'      :String(badSolutions),
                         'current-solutions'  :String(solutionList),
                         'saved-solutions'    :String(savedSolutions),
+                        'saved-objectives'    :String(savedObjectives),
                         
                         'new-solution'       :String(callNewSolution),
                         'next-evaluation'    :String(callNextEvaluation),
@@ -158,12 +161,14 @@
                     objectivesInput = result.objectives;
                     badSolutions = result.bad_solutions;
                     savedSolutions = result.saved_solutions;
+                    savedObjectives = result.saved_objectives;
                     console.log(result.solution);
                     console.log(result.solution_normalised);
                     localStorage.setItem("solution-list", solutionList);
                     localStorage.setItem("objectives-input", objectivesInput);
                     localStorage.setItem("bad-solutions", badSolutions);
                     localStorage.setItem("saved-solutions", savedSolutions);
+                    localStorage.setItem("saved-objectives", savedObjectives);
                     console.log("Success");
                     var url = "optimise.php";
                     location.href = url;
@@ -260,6 +265,7 @@
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
                             'saved-solutions'    :String(savedSolutions),
+                            'saved-objectives'   :String(savedObjectives),
                             'objectives-input'   :String(objectivesInput),
 
                             'new-solution'       :String(callNewSolution),
@@ -276,11 +282,13 @@
                         objectivesInput = result.objectives;
                         badSolutions = result.bad_solutions;
                         savedSolutions = result.saved_solutions;
+                        savedObjectives = result.saved_objectives;
                         
                         localStorage.setItem("solution-list", solutionList);
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("bad-solutions", badSolutions);
                         localStorage.setItem("saved-solutions", savedSolutions);
+                        localStorage.setItem("saved-objectives", savedObjectives);
 
                         console.log("Success");
                         var url = "optimise.php";
@@ -344,6 +352,7 @@
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
                             'saved-solutions'    :String(savedSolutions),
+                            'saved-objectives'   :String(savedObjectives),
                             'objectives-input'   :String(objectivesInput),
 
                             'new-solution'       :String(callNewSolution),
@@ -360,6 +369,7 @@
                         objectivesInput = result.objectives
                         badSolutions = result.bad_solutions;
                         savedSolutions = result.saved_solutions;
+                        savedObjectives = result.saved_objectives;
 
                         new_x = result.new_x
                         console.log(new_x)
@@ -369,6 +379,7 @@
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("bad-solutions", badSolutions);
                         localStorage.setItem("saved-solutions", savedSolutions);
+                        localStorage.setItem("saved-objectives", savedObjectives);
 
                         console.log("Success");
                         var url = "optimise.php";
@@ -407,6 +418,7 @@
                             'bad-solutions'      :String(badSolutions),
                             'current-solutions'  :String(solutionList),
                             'saved-solutions'    :String(savedSolutions),
+                            'saved-objectives'   :String(savedObjectives),
                             'objectives-input'   :String(objectivesInput)},
 
                     success: function(result) {
@@ -415,6 +427,7 @@
                         // badSolutions = result.bad_solutions;
                         objectivesInput = result.objectives;
                         savedSolutions = result.saved_solutions;
+                        savedObjectives = result.saved_objectives;
                         objectivesNormalised = result.objectives_normalised;
                         bestSolutions = result.best_solutions;
                         console.log(objectivesInput);
@@ -425,6 +438,7 @@
                         // localStorage.setItem("bad-solutions", badSolutions);
                         localStorage.setItem("objectives-input", objectivesInput);
                         localStorage.setItem("saved-solutions", savedSolutions);
+                        localStorage.setItem("saved-objectives", savedObjectives);
                         localStorage.setItem("objectives-normalised", objectivesNormalised);
                         localStorage.setItem("best-solutions", bestSolutions);
 

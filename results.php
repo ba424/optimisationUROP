@@ -73,26 +73,27 @@
         // var badSolutions = localStorage.getItem("bad-solutions").split(",");
         // var solutionList = localStorage.getItem("solution-list").split(",");
         var savedSolutions = localStorage.getItem("saved-solutions").split(",");
+        var savedObjectives = localStorage.getItem("saved-objectives").split(",");
         var objectivesInput = localStorage.getItem("objectives-input").split(",");
         var objectivesNormalised = localStorage.getItem("objectives-normalised").split(",");
         var bestSolutions = localStorage.getItem("best-solutions").split(",");
 
-        console.log(savedSolutions);
-        console.log(objectivesInput);
-        console.log(objectivesNormalised);
-        console.log(bestSolutions)
+        console.log("Saved solutions: " + savedSolutions);
+        console.log("Saved objectives: " + savedObjectives);
+        console.log("Normalised objective inputs: " + objectivesNormalised);
+        console.log("Best solutions: " + bestSolutions)
 
         document.getElementById("parameter_1_option_1").innerHTML = parameterNames[0] + ": " + bestSolutions[0];
         document.getElementById("parameter_2_option_1").innerHTML = parameterNames[1] + ": " + bestSolutions[1];
-        document.getElementById("option_1_text").innerHTML = "This option is great in <b>" + parameterNames[0] + "</b> but weaker in <b>" + parameterNames[1].bold() + "</b>.";
+        document.getElementById("option_1_text").innerHTML = "This option is great in <b>" + objectiveNames[0] + "</b> but weaker in <b>" + objectiveNames[1] + "</b>.";
         
         document.getElementById("parameter_1_option_2").innerHTML = parameterNames[0] + ": " + bestSolutions[2];
         document.getElementById("parameter_2_option_2").innerHTML = parameterNames[1] + ": " + bestSolutions[3];
-        document.getElementById("option_2_text").innerHTML = "This option is great in <b>" + parameterNames[1] + "</b> but weaker in <b>" + parameterNames[0].bold() + "</b>.";
+        document.getElementById("option_2_text").innerHTML = "This option is great in <b>" + objectiveNames[1] + "</b> but weaker in <b>" + objectiveNames[0] + "</b>.";
         
         document.getElementById("parameter_1_option_3").innerHTML = parameterNames[0] + ": " + bestSolutions[4];
         document.getElementById("parameter_2_option_3").innerHTML = parameterNames[1] + ": " + bestSolutions[5];
-        document.getElementById("option_3_text").innerHTML = "This option offers a balance between <b>" + parameterNames[0] + "</b> and <b>" + parameterNames[1].bold() + "</b>.";
+        document.getElementById("option_3_text").innerHTML = "This option offers a balance between <b>" + objectiveNames[0] + "</b> and <b>" + objectiveNames[1] + "</b>.";
 
     </script>
 </body>

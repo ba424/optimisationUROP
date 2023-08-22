@@ -20,6 +20,7 @@ objectiveNames = (formData['objective-names'].value).split(',')
 objectiveBounds = (formData['objective-bounds'].value).split(',')
 objectiveMinMax = (formData['objective-min-max'].value).split(',')
 savedSolutions = (formData['saved-solutions'].value).split(',')
+savedObjectives = (formData['saved-objectives'].value).split(',')
 objectivesInput = (formData['objectives-input'].value).split(',')
 
 num_parameters = len(parameterNames)
@@ -48,10 +49,10 @@ def normalise_objectives(obj_tensor_actual):
     return obj_tensor_norm
 
 objectivesInputPlaceholder = []
-for i in range(int(len(objectivesInput)/2)):
-    objectivesInputPlaceholder.append([float(objectivesInput[2*i]), float(objectivesInput[2*i+1])])
-objectivesInput = objectivesInputPlaceholder
-train_obj_actual = torch.tensor(objectivesInput, dtype=torch.float64)
+for i in range(int(len(savedObjectives)/2)):
+    objectivesInputPlaceholder.append([float(savedObjectives[2*i]), float(savedObjectives[2*i+1])])
+savedObjectives = objectivesInputPlaceholder
+train_obj_actual = torch.tensor(savedObjectives, dtype=torch.float64)
 train_obj = normalise_objectives(train_obj_actual)
 
 best_solutions = []
@@ -81,6 +82,7 @@ reply['success'] = True
 reply['message'] = message
 reply['objectives'] = objectivesInput
 reply['saved_solutions'] = savedSolutions
+reply['saved_objectives'] = savedObjectives
 reply['objectives_normalised'] = train_obj.tolist()
 reply['best_solutions'] = best_solutions
 
