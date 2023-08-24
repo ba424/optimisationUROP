@@ -21,7 +21,7 @@ objectiveBounds = (formData['objective-bounds'].value).split(',')
 objectiveMinMax = (formData['objective-min-max'].value).split(',')
 savedSolutions = (formData['saved-solutions'].value).split(',')
 savedObjectives = (formData['saved-objectives'].value).split(',')
-objectivesInput = (formData['objectives-input'].value).split(',')
+# objectivesInput = (formData['objectives-input'].value).split(',')
 
 num_parameters = len(parameterNames)
 parameter_bounds = torch.zeros(2, num_parameters)
@@ -61,26 +61,52 @@ best_obj_2_normalised = -100
 best_obj_balance_normalised = -100
 objectives_list_normalised = train_obj.tolist()
 
-for i in range(len(objectives_list_normalised)):
-    if (objectives_list_normalised[i][0] > best_obj_1_normalised):
-        best_obj_1_normalised = objectives_list_normalised[i][0]
-        best_obj_1_index = i
-    if (objectives_list_normalised[i][1] > best_obj_2_normalised):
-        best_obj_2_normalised = objectives_list_normalised[i][1]
-        best_obj_2_index = i
-    if (objectives_list_normalised[i][0] + objectives_list_normalised[i][1] > best_obj_balance_normalised):
-        best_obj_balance_normalised = objectives_list_normalised[i][0] + objectives_list_normalised[i][1]
-        best_obj_balance_index = i
+obj_1_normalised = []
+obj_2_normalised = []
+obj_balance_normalised = []
 
-best_solutions.append(savedSolutions[best_obj_1_index*num_parameters:best_obj_1_index*num_parameters+num_parameters])
-best_solutions.append(savedSolutions[best_obj_2_index*num_parameters:best_obj_2_index*num_parameters+num_parameters])
-best_solutions.append(savedSolutions[best_obj_balance_index*num_parameters:best_obj_balance_index*num_parameters+num_parameters])
+for i in range(int(len(objectives_list_normalised))):
+    obj_1_normalised.append(objectives_list_normalised[i][0])
+    obj_2_normalised.append(objectives_list_normalised[i][1])
+    obj_balance_normalised.append(objectives_list_normalised[i][0] + objectives_list_normalised[i][1])
+
+best_obj_1_index = np.argsort(obj_1_normalised)
+best_obj_2_index = np.argsort(obj_2_normalised)
+best_obj_balance_index = np.argsort(obj_balance_normalised)
+
+if (best_obj_2_index[-1] == best_obj_1_index[-1]):
+    best_obj_2_index = best_obj_2_index[:-1] # remove last element
+while (best_obj_balance_index[-1] == best_obj_1_index[-1] or best_obj_balance_index[-1] == best_obj_2_index[-1]):
+    best_obj_balance_index = best_obj_balance_index[:-1]
+
+# Placeholders / Dummy variables for conditioning to avoid same solution being proposed twice
+# best_obj_1_index, best_obj_2_index, best_obj_balance_index = [], [], []
+# best_obj_2_index = 101
+# best_obj_balance_index = 102
+
+# for i in range(len(objectives_list_normalised)):
+#     if (objectives_list_normalised[i][0] > best_obj_1_normalised and best_obj_1_index != best_obj_2_index and best_obj_1_index != best_obj_balance_index):
+#         best_obj_1_normalised = objectives_list_normalised[i][0]
+#         best_obj_1_index = i
+#     if (objectives_list_normalised[i][1] > best_obj_2_normalised and best_obj_2_index != best_obj_1_index and best_obj_2_index != best_obj_balance_index):
+#         best_obj_2_normalised = objectives_list_normalised[i][1]
+#         best_obj_2_index = i
+#     if (objectives_list_normalised[i][0] + objectives_list_normalised[i][1] > best_obj_balance_normalised):
+#         best_obj_balance_normalised = objectives_list_normalised[i][0] + objectives_list_normalised[i][1]
+#         best_obj_balance_index = i
+# best_solutions.append(savedSolutions[best_obj_1_index*num_parameters:best_obj_1_index*num_parameters+num_parameters])
+# best_solutions.append(savedSolutions[best_obj_2_index*num_parameters:best_obj_2_index*num_parameters+num_parameters])
+# best_solutions.append(savedSolutions[best_obj_balance_index*num_parameters:best_obj_balance_index*num_parameters+num_parameters])
+
+best_solutions.append(savedSolutions[best_obj_1_index[-1]*num_parameters:best_obj_1_index[-1]*num_parameters+num_parameters])
+best_solutions.append(savedSolutions[best_obj_2_index[-1]*num_parameters:best_obj_2_index[-1]*num_parameters+num_parameters])
+best_solutions.append(savedSolutions[best_obj_balance_index[-1]*num_parameters:best_obj_balance_index[-1]*num_parameters+num_parameters])
 
 reply = {}
 
 reply['success'] = True
 reply['message'] = message
-reply['objectives'] = objectivesInput
+# reply['objectives'] = objectivesInput
 reply['saved_solutions'] = savedSolutions
 reply['saved_objectives'] = savedObjectives
 reply['objectives_normalised'] = train_obj.tolist()

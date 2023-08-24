@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -73,58 +74,18 @@
     <!-- <div style="text-align: right;">
         <button class="finish-objectives-button" id="finish-objectives-button" onclick="finishObjs()">Ready</button>
     </div> -->
-    
+    <br>
     <div style="display: flex; justify-content: space-between;">
-        <button class="button" id="back-button" onclick="history.back()">Go Back</button>
-        <button class="button" id="confirm-definitions-button" onclick="confirmDefinitions()">Confirm</button>
+        <button class="button" id="back-button" onclick="history.back()" style="width: 20%;">Go Back</button>
+        <button class="button" id="confirm-definitions-button" onclick="confirmDefinitions()" style="width: 20%;">Confirm</button>
     </div>
 
     </div>
-    
     
     <style>
-        body {
-            font-family: calibri;
+        table, td {
+            background-color: transparent;
         }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 0px 16px;
-            margin: 0px 0px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 650px;
-        }
-    
-        .button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            color: white;
-            background-color: #70ad47;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            width: 20%;
-            cursor:pointer;
-        }
-
-        .button:active {
-            background-color: #009933;
-        }
-    
-        table, th, td {
-            border: 1px solid;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        th {
-            background-color: #D6EEEE;
-        }
-    
     </style>
     
     <script>
@@ -163,8 +124,6 @@
             localStorage.setItem("objective-names", objectiveNames);
             localStorage.setItem("objective-bounds", objectiveBounds);
             localStorage.setItem("objective-min-max", objectiveMinMax);
-
-            // localStorage.setItem("tutorial-done", true);
 
             $.ajax({
                 url: "../Demo/cgi/log-definitions.py",

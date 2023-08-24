@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -83,56 +84,10 @@
     <br>
 
     <div style="text-align: right;">
-        <button class="finish-objectives-button" id="finish-objectives-button" onclick="finishObjs()">Ready</button>
+        <button class="button" id="finish-objectives-button" style="width: 20%;" onclick="finishObjs()">Ready</button>
     </div>
     
     </div>
-    
-    
-    <style>
-        body {
-            font-family: calibri;
-        }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 0px 16px;
-            margin: 0px 0px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 650px;
-        }
-    
-        #finish-objectives-button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            color: white;
-            background-color: #70ad47;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            width: 20%;
-            cursor:pointer;
-        }
-        #finish-objectives-button:active {
-            background-color: #009933;
-        }
-    
-        table, th, td {
-            border: 1px solid;
-            border-collapse: collapse;
-            background-color: white;
-            text-align: center;
-        }
-        th {
-            background-color: #D6EEEE;
-        }
-    
-    </style>
     
     <script>
         function finishObjs() {

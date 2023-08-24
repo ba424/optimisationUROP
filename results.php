@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="background">
@@ -26,42 +27,11 @@
     <br>
     <div class="restart-button" style="text-align: left;">
         <form action="/Demo/define.php">
-            <button id="restart-button" type="submit">Restart</button>
+            <button id="restart-button" class="button" type="submit">Restart</button>
         </form>
     </div>
 
     </div>
-    <style>
-        body {
-            font-family: 'Calibri';
-        }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 16px 16px;
-            margin: 4px 4px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 600px;
-        }
-    
-        #restart-button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            color: white;
-            background-color: #70ad47;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            width: 40%;
-            cursor:pointer;
-        }
-    
-    </style>
 
     <script>
         var parameterNames = localStorage.getItem("parameter-names").split(",");
@@ -74,7 +44,7 @@
         // var solutionList = localStorage.getItem("solution-list").split(",");
         var savedSolutions = localStorage.getItem("saved-solutions").split(",");
         var savedObjectives = localStorage.getItem("saved-objectives").split(",");
-        var objectivesInput = localStorage.getItem("objectives-input").split(",");
+        // var objectivesInput = localStorage.getItem("objectives-input").split(",");
         var objectivesNormalised = localStorage.getItem("objectives-normalised").split(",");
         var bestSolutions = localStorage.getItem("best-solutions").split(",");
 

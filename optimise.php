@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -8,18 +9,9 @@
     <div id="background">
     
     <h1>2. Optimise</h1>
-    <p><i>Let AI suggest solutions with you</i></p>
+    <p><i>Let AI suggest solutions with you. Please evaluate at least 3 solutions to proceed.</i></p>
     
     <p><b>Solution idea</b><p>
-    <!-- <div style="display: flex; justify-content: left;">
-        <p class="parameter_1_mobo"></p><p id="solution_1"></p>
-    </div>
-    <div style="display: flex; justify-content: left;">
-        <p class="parameter_2_mobo"></p><p id="solution_2"></p>
-    </div>
-    <div style="display: flex; justify-content: left;">
-        <p class="parameter_3_mobo"></p><p id="solution_3"></p>
-    </div> -->
 
     <p class="parameter_1_mobo"></p>
     <p class="parameter_2_mobo"></p>
@@ -32,11 +24,12 @@
     </div>
     
     <div id="evaluate-solution" style="display: none;">
-        <input size="40" id = "solution_name" placeholder="Give a memorable name to this idea" style="font-family: calibri; font-size: medium;"><br><br>
+        <label for="solution_name">Solution name: </label>
+        <input size="40" id = "solution_name" placeholder="Give a memorable name to this idea"><br><br>
         <label for="obj1" class="objective_1_name"></label>
-        <input size="30" type="text" id="obj1" name="obj1" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
+        <input size="30" type="text" id="obj1" name="obj1" placeholder="Enter measurement"><br>
         <label for="obj2" class="objective_2_name"></label>
-        <input size="30" type="text" id="obj2" name="obj2" placeholder="Enter measurement" style="font-family: calibri; font-size: medium;"><br>
+        <input size="30" type="text" id="obj2" name="obj2" placeholder="Enter measurement"><br>
         
         <div id="form-options" style="display: inline-block; margin: 0 auto;">
             <button class="button" id="next-button" onclick="nextEvaluation()">Give me the next one</button>
@@ -44,45 +37,11 @@
         </div>
     </div>
     <br>
-    <div class="done-button" style="text-align: right;">
+    <div id="done-button" class="done-button" style="text-align: right;">
         <button class="button" id="done" onclick="finishSolutions()">I'm done</button>    
     </div>
 
     </div>
-    <style>
-        body {
-            font-family: calibri;
-        }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 16px 16px;
-            margin: 4px 4px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 500px;
-        }
-    
-        .button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            color: white;
-            background-color: #70ad47;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .button:active {
-            background-color: #009933;
-        }
-    
-    </style>
 
     <script>
         var parameterNames = localStorage.getItem("parameter-names").split(",");
@@ -116,7 +75,23 @@
             paras2[i].innerHTML = parameterNames[1] + " =  " + solutionList[solutionList.length-1];
             //  paras3[i].innerHTML = parameterNames[2] + " =  " + solutionList[solutionList.length-1];
         }
-        
+
+        if (savedSolutions.length >= num_parameters*3) {
+            // document.getElementById("done-button").style.opacity = 1;
+            document.getElementById("done-button").style.display = 'block';
+        }
+        else {
+            // document.getElementById("done-button").style.opacity = 0.5;
+            document.getElementById("done-button").style.display = 'none';
+        }
+
+        if (savedSolutions.length < 2) {
+            document.getElementById("solution_name").value = 'Solution 1';
+        }
+        else {
+            document.getElementById("solution_name").value = 'Solution ' + Math.round(savedSolutions.length/num_parameters + 1);
+        }
+            
         // Individual solutions
         // document.getElementById("solution_1").innerHTML = solution[0];
         // document.getElementById("solution_2").innerHTML = solution[1];
@@ -201,20 +176,6 @@
                 x.style.display = 'none';
                 y.style.display = 'inline-block';
             }
-
-            // if (validObj1 && validObj2){
-            //         if (parseFloat(obj1) < objectiveBounds[1] && parseFloat(obj1)){
-            //             parameterLowerBounds.push(paramLowerBound);
-            //             parameterUpperBounds.push(paramUpperBound)
-            //         }
-            //         else {
-            //            noError = false;
-            //         }
-            //     }
-            // else {
-            //     noError = false;
-            // }
-
         }
 
         function nextEvaluation() {
@@ -242,9 +203,9 @@
                 noError = false;
             }
 
-            if (/^[A-Za-z0-9]+$/.test(solutionName) == false){
-                noError = false;
-            }
+            // if (/^[A-Za-z0-9]+$/.test(solutionName) == false){
+            //     noError = false;
+            // }
 
             if (noError) {
                 localStorage.setItem("solution-name", solutionName);
@@ -329,9 +290,9 @@
                 noError = false;
             }
 
-            if (/^[A-Za-z0-9]+$/.test(solutionName) == false){
-                noError = false;
-            }
+            // if (/^[A-Za-z0-9]+$/.test(solutionName) == false){
+            //     noError = false;
+            // }
 
             if (noError) {
                 localStorage.setItem("solution-name", solutionName);

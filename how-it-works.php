@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
@@ -34,61 +35,28 @@
 
     <div style="text-align: right;">
         <form action="/Demo/define.php">
-            <input type="submit" value="Ready" id="start_button"/>
+            <input type="submit" value="Ready" class="button" style="width: 20%;"/>
         </form>
     </div>
     </div>
-    
-    
+ 
     <style>
-        body {
-            font-family: calibri;
+        .mySlides {
+            display: none;
         }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 16px 16px;
-            margin: 4px 4px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 500px;
-        }
-    
-        #start_button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            color: white;
-            background-color: #70ad47;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            width: 40%;
-            cursor:pointer;
-        }
-        #start_button:active {
-            background-color: #009933;
-        }
-        .mySlides {display: none;}
-        
         img {
             display: block;
             margin-left: auto;
             margin-right: auto;
         }
-
         /* Slideshow container */
         .slideshow-container {
-        max-width: 1000px;
-        position: relative;
-        margin: auto;
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
         }
-
         .active {
-        background-color: #717171;
+            background-color: #717171;
         }
     </style>
     
@@ -113,6 +81,7 @@
           setTimeout(showSlides, 2000); // Change image every 2 seconds
         }
     </script>
+
     </body>
 </html>
 

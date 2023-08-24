@@ -151,14 +151,6 @@ def generate_initial_data(n_samples=1):
             ).squeeze(0)
             train_x = train_x.type(torch.DoubleTensor)
             train_x_actual = unnormalise_parameters(train_x)
-            # train_x_actual_placeholder = []
-            # for i in range(num_parameters):
-            #     train_x_actual_placeholder.append(np.random.randint(float(parameterBounds[2*i]), float(parameterBounds[2*i+1])))
-            # train_x_actual = torch.tensor([train_x_actual_placeholder], dtype=torch.float64)
-            # train_x = normalise_parameters(train_x_actual)
-            # print("Initial solution: ", train_x_actual)
-        # train_obj_actual, train_obj = objective_function(train_x_actual)
-
     return train_x, train_x_actual
 
 def initialize_model(train_x, train_obj):
@@ -190,17 +182,11 @@ def optimize_qehvi(model, train_obj, sampler, parameter_bounds=parameter_bounds)
     # observe new values
     new_x =  unnormalize(candidates.detach(), bounds=parameter_bounds_normalised)
     new_x_actual = unnormalise_parameters(new_x, parameter_bounds)
-    # new_x_actual_unrefined = unnormalise_parameters(new_x)
 
     if (badSolutions != []):
         while (checkForbiddenRegions(bad_solutions, new_x_actual) == False):
-            # print("Solution proposed within forbidden region")
-            # new_x =  unnormalize(candidates.detach(), bounds=problem_bounds)
-            # new_x_actual = unnormalise_parameters(new_x)
-            # new_x, new_x_actual = generate_initial_data()
             new_x_actual = torch.tensor([[np.random.randint(parameter_bounds[0][0], parameter_bounds[1][0]), np.random.randint(parameter_bounds[0][1], parameter_bounds[1][1])]])
             new_x = normalise_objectives(new_x_actual)
-            # print("Next solution: ", new_x_actual)
     return new_x, new_x_actual
 
 if (newSolution[0]=="true"):
@@ -307,8 +293,11 @@ if (refineSolution[0] == "true"):
     parameter_bounds_range_refined = []
     for i in range(num_parameters):
         parameter_bounds_refined[0][i] = currentSolutions[len(currentSolutions)-num_parameters+i] - parameter_bounds_range[i]*0.05
+        if (parameter_bounds_refined[0][i] < parameter_bounds[0][i]):
+            parameter_bounds_refined[0][i] = parameter_bounds[0][i]
         parameter_bounds_refined[1][i] = currentSolutions[len(currentSolutions)-num_parameters+i] + parameter_bounds_range[i]*0.05
-
+        if (parameter_bounds_refined[1][i] > parameter_bounds[1][i]):
+            parameter_bounds_refined[1][i] = parameter_bounds[1][i]
         parameter_bounds_range_refined.append(parameter_bounds_refined[1][i] - parameter_bounds_refined[0][i])
     
     train_x = normalise_parameters(train_x_actual)
@@ -350,67 +339,6 @@ if (refineSolution[0] == "true"):
     reply['saved_solutions'] = savedSolutions
     reply['saved_objectives'] = savedObjectives
 
-def mobo_execute(seed, iterations, initial_samples):
-    torch.manual_seed(seed)
-
-    hv = Hypervolume(ref_point=obj_ref_point)
-    # Hypervolumes
-    hvs_qehvi = []
-
-    # Initial Samples
-    # train_x_qehvi, train_obj_qehvi = load_data()
-    train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi = generate_initial_data()
-
-    # Initialize GP models
-    mll_qehvi, model_qehvi = initialize_model(train_x_qehvi, train_obj_qehvi)
-
-    # Compute Pareto front and hypervolume
-    pareto_mask = is_non_dominated(train_obj_qehvi)
-    pareto_y = train_obj_qehvi[pareto_mask]
-    volume = hv.compute(pareto_y)
-    hvs_qehvi.append(volume)
-    # save_xy(train_x_qehvi, train_obj_qehvi, hvs_qehvi)
-
-    # Go through the iterations
-
-    for iteration in range(1, iterations + 1):
-        # Fit Models
-        fit_gpytorch_model(mll_qehvi)
-
-        # Define qEI acquisition modules using QMC sampler
-        qehvi_sampler = SobolQMCNormalSampler(num_samples=MC_SAMPLES)
-
-        # Optimize acquisition functions and get new observations
-        new_x_qehvi, new_x_actual_qehvi, new_obj_qehvi, new_obj_actual_qehvi = optimize_qehvi(model_qehvi, train_obj_qehvi, qehvi_sampler)
-        # new_obj_qehvi = objective_function(new_x_qehvi[0])
-
-        # Update training points
-        train_x_qehvi = torch.cat([train_x_qehvi, new_x_qehvi])
-        train_x_actual_qehvi = torch.cat([train_x_actual_qehvi, new_x_actual_qehvi])
-        train_obj_qehvi = torch.cat([train_obj_qehvi, new_obj_qehvi])
-        train_obj_actual_qehvi = torch.cat([train_obj_actual_qehvi, new_obj_actual_qehvi])
-
-        # Compute hypervolumes
-        pareto_mask = is_non_dominated(train_obj_qehvi)
-        pareto_y = train_obj_qehvi[pareto_mask]
-        volume = hv.compute(pareto_y)
-        hvs_qehvi.append(volume)
-
-        # save_xy(train_x_qehvi, train_obj_qehvi, hvs_qehvi)
-        print("training x actual", train_x_actual_qehvi[-1])
-        print("training x", train_x_qehvi[-1])
-        print("training obj actual", train_obj_actual_qehvi[-1])
-        print("training obj", train_obj_qehvi[-1])
-        print("mask", pareto_mask)
-        print("pareto y", pareto_y[-1])
-        print("volume", volume)
-        print("\n")
-        mll_qehvi, model_qehvi = initialize_model(train_x_qehvi, train_obj_qehvi)
-
-    return hvs_qehvi, train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi
-
-# hvs_qehvi, train_x_qehvi, train_x_actual_qehvi, train_obj_qehvi, train_obj_actual_qehvi = mobo_execute(SEED, 35, 1)
-
 
 reply['success'] = True
 reply['message'] = message
@@ -424,44 +352,3 @@ sys.stdout.write(json.dumps(reply,indent=1))
 sys.stdout.write("\n")
 
 sys.stdout.close()
-
-    # while True:
-    #     train_obj_1 = input("Enter Cost ($): ")
-    #     try:
-    #         train_obj_1 = float(train_obj_1)
-    #         if (train_obj_1 >= 100 and train_obj_1 <= 1000):
-    #             break
-    #         else:
-    #             raise ValueError
-    #     except ValueError:
-    #         print("Error. Please enter a valid measurement, within the objective bounds.")
-    # while True:
-    #     train_obj_2 = input("Enter Travel Time (hrs): ")
-    #     try:
-    #         train_obj_2 = float(train_obj_2)
-    #         if (train_obj_2 >= 2 and train_obj_2 <= 10):
-    #             break
-    #         else:
-    #             raise ValueError
-    #     except ValueError:
-    #         print("Error. Please enter a valid measurement, within the objective bounds.")
-
-    # train_obj = torch.tensor([[float(train_obj_1), float(train_obj_2)]], dtype=torch.float64)
-    # return train_x, train_obj
-
-
-    # def initialize_model(train_x, train_obj):
-    #     # define models for objective and constraint
-    #     train_x = normalize(train_x, parameters)
-    #     models = []
-    #     for i in range(train_obj.shape[-1]):
-    #         train_y = train_obj[..., i : i + 1]
-    #         train_yvar = torch.full_like(train_y, NOISE_SE[i] ** 2)
-    #         models.append(
-    #             FixedNoiseGP(
-    #                 train_x, train_y, train_yvar, outcome_transform=Standardize(m=1)
-    #             )
-    #         )
-    #     model = ModelListGP(*models)
-    #     mll = SumMarginalLogLikelihood(model.likelihood, model)
-    #     return mll, model

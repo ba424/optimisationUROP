@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
@@ -12,8 +13,8 @@
     
     <div class="tooltip">For example
         <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 10px;">
-                <p class="parameter1"></p><p>1500</p>
-                <p class="parameter2"></p><p>10</p>
+                <p id="parameter1_example"></p>
+                <p id="parameter2_example"></p>
                 <!-- <p class="parameter3"></p><p>1</p> -->
         </span>
     </div>
@@ -21,12 +22,12 @@
     <br>
  
     <div id="buttons" style="display:block">
-        <div class="add-existing-solutions">
-            <button id="add-existing-solutions" onclick="addExistingSolutions()">Yes, some</button>
+        <div class="add-existing-solutions" style=" margin-right:2%; float: left;">
+            <button id="add-existing-solutions" class="button" onclick="addExistingSolutions()">Yes, some</button>
         </div>
 
-        <div class="start-button">
-            <button id="start" onclick="finishSolutions()">No let's start</button>
+        <div class="start-button" style=" float: left;">
+            <button id="start" class="button" onclick="finishSolutions()">No let's start</button>
         </div>
 
         <!-- <div class="start-button">
@@ -35,7 +36,7 @@
             </form>
         </div> -->
 
-        <div class="clearfix"></div>
+        <div class="clearfix" style="clear: both;"></div>
     </div>
 
     <div id="add-solutions" style="display:none">
@@ -72,7 +73,7 @@
         </table>
 
         <div style="text-align: center;">
-            <button class="button" id="add-record-button" onclick="addBadSolutionsTable()">Add Bad Solution</button>
+            <button class="button" id="add-record-button" onclick="addBadSolutionsTable()" style="color: black; background-color: #D6EEEE;">Add Bad Solution</button>
         </div>
         <br>
 
@@ -88,72 +89,7 @@
         -->
     </div>
 
-
-    
-    
     <style>
-        body {
-            font-family: calibri;
-        }
-    
-        #background {
-            background-color: #f2f2f2;
-            padding: 16px 16px;
-            margin: 4px 4px;
-            border-radius: 12px;
-            display: inline-block;
-            border:1px solid black;
-            width: 650px;
-        }
-    
-        .add-existing-solutions{
-            width:20%;
-            margin-right:2%;
-            float: left;
-        }
-        .start-button {
-            width:30%;
-            float: left;
-        }
-        .clearfix{
-            clear:both
-        }
-
-        #start, #add-existing-solutions, #finish-solutions-button, #back-button {
-            background-color: #70ad47;
-            font-family: 'Calibri';
-            font-size: medium;
-            color: white;
-            cursor:pointer;
-            border-radius: 12px;
-            border-width: 1.5px;
-            padding: 16px 16px;
-        }
-        #start:active, #add-existing-solutions:active, #finish-solutions-button:active, #back-button:active {
-            background-color: #009933;
-        }
-
-        table, th, td {
-            border: 1px solid;
-            border-collapse: collapse;
-            background-color: white;
-            text-align: center;
-        }
-        th {
-            background-color: #D6EEEE;
-        }
-        #add-record-button {
-            text-align: center;
-            font-family: calibri;
-            font-size: medium;
-            background-color: #D6EEEE;
-            padding: 8px 16px;
-            margin: 4px 2px;
-            border-radius: 12px;
-            border-width: 1.5px;
-            display: inline-block;
-            cursor:pointer;
-        }
         .tooltip {
             position: relative;
             display: inline-block;
@@ -197,6 +133,9 @@
             paras2[i].innerHTML = parameterNames[1];
             // paras3[i].innerHTML = parameterNames[2];
         }
+
+        document.getElementById("parameter1_example").innerHTML = parameterNames[0] +": "+parameterBounds[0];
+        document.getElementById("parameter2_example").innerHTML = parameterNames[1] +": "+parameterBounds[2];
 
         function addExistingSolutions() {
             var x = document.getElementById('add-solutions');
