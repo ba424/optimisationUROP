@@ -8,7 +8,7 @@
     <div id="background">
     
     <h1>1. Define</h1>
-    <p><i>Let us know what you want to optimize.</i></p>
+    <p><i>Let us know what you want to optimise.</i></p>
 
     <h2>Confirmation</h2>
     <p><i>Please confirm your design parameters and objectives are defined correctly.</i></p>

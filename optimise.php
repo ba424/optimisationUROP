@@ -8,7 +8,13 @@
 
     <div id="background">
     
-    <h1>2. Optimise</h1>
+    <div style="display: flex; justify-content: space-between;">
+        <h1>2. Optimise</h1>
+        <form action="/Demo/help.php#optimisation">
+            <input type="submit" value="Help" class="button" id="help-button" style="color: white; background-color: #0173bc;"/>
+        </form>
+    </div>
+
     <p><i>Let AI suggest solutions with you. Please evaluate at least 3 solutions to proceed.</i></p>
     
     <p><b>Solution idea</b><p>
@@ -22,7 +28,7 @@
         <button class="button" id="evaluate-button" style="width: 40%;" onclick="evaluateSolution()">I want to evaluate this</button>
         <button class="button" id="skip-button" style="width: 40%;" onclick="newSolution()">Skip. I know it's not good</button>
     </div>
-    
+    <br>
     <div id="evaluate-solution" style="display: none;">
         <label for="solution_name">Solution name: </label>
         <input size="40" id = "solution_name" placeholder="Give a memorable name to this idea"><br><br>
@@ -30,7 +36,7 @@
         <input size="30" type="text" id="obj1" name="obj1" placeholder="Enter measurement"><br>
         <label for="obj2" class="objective_2_name"></label>
         <input size="30" type="text" id="obj2" name="obj2" placeholder="Enter measurement"><br>
-        
+        <br>
         <div id="form-options" style="display: inline-block; margin: 0 auto;">
             <button class="button" id="next-button" onclick="nextEvaluation()">Give me the next one</button>
             <button class="button" id="skip-button" onclick="refineSolution()">I want to refine this</button>

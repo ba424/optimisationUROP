@@ -7,8 +7,13 @@
 <body>
     <div id="background">
     
-    <h1>1. Define</h1>
-    <p><i>Let us know what you want to optimize. An example is shown below for optimizing the travel for a holiday, which you can edit to implement your optimization.</i></p>
+    <div style="display: flex; justify-content: space-between;">
+        <h1>1. Define</h1>
+        <form action="/Demo/help.php#define">
+            <input type="submit" value="Help" class="button" id="help-button" style="color: white; background-color: #0173bc;"/>
+        </form>
+    </div>
+    <p><i>Let us know what you want to optimise. An example is shown below for optimising the travel for a holiday, which you can edit to implement your optimisation.</i></p>
 
     <h2>What factors do you need to decide?</h2>
     <p><i>Describe each factor that you want to decide. Examples: “destination distance”, “number of days” amd "number of flight connections".</i></p>
@@ -43,7 +48,7 @@
         </table>
     </div>
 
-    <h2>Which measurements do you want to optimize?</h2>
+    <h2>Which measurements do you want to optimise?</h2>
     <p><i>Describe your objectives. You can include also subjective measurements, even opinions. Examples: “cost”, “travel time”.</i></p>
     <div id="objective-table-div" style="text-align: center;">
         <table id="objective-table" class="objective-table" width="100%">

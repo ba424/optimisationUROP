@@ -27,8 +27,17 @@ body {
     cursor:pointer;
 }
 
+#help-button {
+    color: black;
+    background-color: #0173bc;
+}
+
 .button:active {
     background-color: #009933;
+}
+
+#help-button:active {
+    background-color: #6aa6e2;
 }
 
 table, td {

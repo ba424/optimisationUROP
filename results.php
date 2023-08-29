@@ -6,29 +6,40 @@
 <body>
     <div id="background">
     
-    <h1>3. Results</h1>
+    <div style="display: flex; justify-content: space-between;">
+        <h1>3. Results</h1>
+        <form action="/Demo/help.php#results">
+            <input type="submit" value="Help" class="button" id="help-button" style="color: white; background-color: #0173bc;"/>
+        </form>
+    </div>
+
     <p><i>Here are the best options we found</i></p>
     
     <p><b>Option 1</b></p>
     <p id="parameter_1_option_1"></p>
     <p id="parameter_2_option_1"></p> 
     <p id="option_1_text" style="font-style: italic"></p>
-
+    <br>
     <p><b>Option 2</b></p>
     <p id="parameter_1_option_2"></p>
     <p id="parameter_2_option_2"></p> 
     <p id="option_2_text" style="font-style: italic"></p>
-
+    <br>
     <p><b>Option 3</b></p>
     <p id="parameter_1_option_3"></p>
     <p id="parameter_2_option_3"></p> 
     <p id="option_3_text" style="font-style: italic"></p>
 
     <br>
-    <div class="restart-button" style="text-align: left;">
+    <!-- <div class="restart-button" style="text-align: left;">
         <form action="/Demo/define.php">
             <button id="restart-button" class="button" type="submit">Restart</button>
         </form>
+    </div> -->
+
+    <div style="display: flex; justify-content: space-between;">
+        <button class="button" id="back-button" onclick="history.back()">Go Back</button>
+        <form action="/Demo/define.php"><button id="restart-button" class="button" type="submit">Restart</button></form>
     </div>
 
     </div>

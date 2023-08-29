@@ -8,11 +8,16 @@
 <body>
     <div id="background">
     
-    <h1>One question before we start…</h1>
+    <div style="display: flex; justify-content: space-between;">
+        <h1>One question before we start...</h1>
+        <form action="/Demo/help.php#existing-solutions">
+            <input type="submit" value="Help" class="button" id="help-button" style="color: white; background-color: #0173bc;"/>
+        </form>
+    </div>
     <p><i>Are there known bad solutions we should include?</i></p>
     
     <div class="tooltip">For example
-        <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 10px;">
+        <span class="tooltiptext" style="display: flex; justify-content: space-between; padding: 0px 5px;">
                 <p id="parameter1_example"></p>
                 <p id="parameter2_example"></p>
                 <!-- <p class="parameter3"></p><p>1</p> -->
@@ -20,7 +25,7 @@
     </div>
     <br>
     <br>
- 
+    <br>
     <div id="buttons" style="display:block">
         <div class="add-existing-solutions" style=" margin-right:2%; float: left;">
             <button id="add-existing-solutions" class="button" onclick="addExistingSolutions()">Yes, some</button>
@@ -98,7 +103,7 @@
 
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 600px;
+            width: 400px;
             background-color: #6a6e73;
             color: #fff;
             text-align: center;
