@@ -31,7 +31,7 @@ Apache is used to run the program locally and so ensure you have [XAMPP](https:/
 1. Download the files as a zip folder.
 2. Copy the folder into `htdocs` within the `xampp` folder in your Local Disk.
 3. Click "Start" on the Apache module in the XAMPP Control Panel.
-4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/_filepath-in-htdocs_/welcome.php.
+4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/_filepath_in_htdocs_/welcome.php.
 5. Follow the instructutions and proceed with the application.
 
 ## Miscellaneous
