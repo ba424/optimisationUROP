@@ -14,6 +14,7 @@ The PHP files represent the front-end of the program. The sequence of pages is:
 5. `existing-solutions.php`: Known bad solutions can be added here
 6. `optimise.php`: Solutions proposed by AI and evaluated by the user
 7. `results.php`: Summary of best solutions evaluated
+
 `styles.css` is the stylesheet used as the foundation for the pages. `help.php` offers an explanation of the key stages to the program (defining design paramaters and objectives, adding existing solutions, optimisation, and results), and can be accessed via those respective pages.
 
 ## Back-end
