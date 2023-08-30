@@ -3,7 +3,7 @@
 ## Introduction
 The purpose of this project is to develop a program to perform multi-objective Bayesian optimisation (MOBO) aimed at the every day person. It includes the ability to define design paramters and design objectives to be minimised and/or maximised. The user is also able to define solutions that are already known to not be satisfactory which the AI takes into account when performing the optimisation. The interface has been designed to be as simple as possible in order to ensure ease of use. 
 
-The project builds on the previous work on MOBO by [L. Chan et. al](https://dl.acm.org/doi/pdf/10.1145/3491102.3501850), [Y. -C. Liao et al.](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10024515), and [G. Mo](https://github.com/georgemo535/D3MOBO).
+The project builds on the previous work on MOBO by [L. Chan et. al](https://dl.acm.org/doi/pdf/10.1145/3491102.3501850)<sup>1</sup>, [Y. -C. Liao et al.](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10024515)<sup>2</sup>, and [G. Mo](https://github.com/georgemo535/D3MOBO)<sup>3</sup>.
 
 ## Front-end
 The PHP files represent the front-end of the program. The sequence of pages is:
@@ -31,14 +31,14 @@ Apache is used to run the program locally and so ensure you have [XAMPP](https:/
 1. Download the files as a zip folder.
 2. Copy the folder into `htdocs` within the `xampp` folder in your Local Disk.
 3. Click "Start" on the Apache module in the XAMPP Control Panel.
-4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/_filepath_in_htdocs_/welcome.php.
+4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/_Demo_/welcome.php where _Demo_ is the filepath to `welcome.php` from the folder `htdocs`.
 5. Follow the instructutions and proceed with the application.
 
 ## Miscellaneous
 The `Archive` folder includes previous copies of files for testing and reference purposes. The `Pictures` folder includes the images used in the front-end in the prgram. 
 
 ## References
-[1] Chan, L. et al. (2022) ‘Investigating positive and negative qualities of human-in-the-loop optimization for designing interaction techniques’, CHI Conference on Human Factors in Computing Systems [Preprint]. doi:10.1145/3491102.3501850. 
-[2] Y. -C. Liao et al., "Interaction Design With Multi-Objective Bayesian Optimization," in IEEE Pervasive Computing, vol. 22, no. 1, pp. 29-38, 1 Jan.-March 2023, doi: 10.1109/MPRV.2022.3230597.
-[3] Mo, G. D3MOBO, GitHub. Available at: https://github.com/georgemo535/D3MOBO. 
+1. Chan, L. et al. (2022) ‘Investigating positive and negative qualities of human-in-the-loop optimization for designing interaction techniques’, CHI Conference on Human Factors in Computing Systems [Preprint]. doi:10.1145/3491102.3501850.
+2. Y. -C. Liao et al., "Interaction Design With Multi-Objective Bayesian Optimization," in IEEE Pervasive Computing, vol. 22, no. 1, pp. 29-38, 1 Jan.-March 2023, doi: 10.1109/MPRV.2022.3230597.
+3. Mo, G. D3MOBO, GitHub. Available at: https://github.com/georgemo535/D3MOBO. 
 
