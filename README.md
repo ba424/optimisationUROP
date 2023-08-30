@@ -23,7 +23,7 @@ The `cgi` folder contains the Python scripts that form the back-end to the progr
 The `cgi` Python module is used to store the necessary variables and information to transfer between the server and client sides. 
 
 ## Application
-Apache is used to run the program locally; ensure you have [XAMPP]([url](https://www.apachefriends.org/)) installed. To run the program: 
+Apache is used to run the program locally and so nsure you have [XAMPP](https://www.apachefriends.org/) installed first before use. To run the program: 
 1. Download the files as a zip folder.
 2. Copy the folder into `htdocs` within the `xampp` folder in your Local Disk.
 3. Click "Start" on the Apache module in the XAMPP Control Panel.
