@@ -21,16 +21,17 @@ The PHP files represent the front-end of the program. The sequence of pages is:
 The `cgi` folder contains the Python scripts that form the back-end to the program. The purpose of each is listed below:
 1. `log-definitions.py`: Saves and stores the design parameters and objectives to the SQL database `Data\database.db` after confirming the entries in `confirm-definitons.php`.
 2. `import-all.py`: Contains all the relevant BoTorch modules and necessary parameters to be imported to perform the optimisation.
-3. `initial-mobo.py`: The Python script where MOBO takes place. There are several functions that are implemented and executed depending on the user's choice: skip and evaluate (give next solution or refine solution). 
-4. `finish-solutions.py`: Script used to determine the best solutions from those evaluated which optimise for each objective respectively, and also gives the best balanced solution.
-The `cgi` Python module is used to store the necessary variables and information to transfer between the server and client sides. 
+3. `initial-mobo.py`: The Python script where MOBO takes place. There are several functions that are implemented and executed depending on the user's choice: skip, give next solution or refine solution. 
+4. `finish-solutions.py`: The script is used to determine the best solutions from those evaluated by optimising for each objective respectively. It also gives the best solution that balances both objectives.
+
+The `cgi` Python module is used to store the necessary variables and information to transfer between the server and client sides of the program. 
 
 ## Application
-Apache is used to run the program locally and so nsure you have [XAMPP](https://www.apachefriends.org/) installed first before use. To run the program: 
+Apache is used to run the program locally and so ensure you have [XAMPP](https://www.apachefriends.org/) installed first before use. To run the program: 
 1. Download the files as a zip folder.
 2. Copy the folder into `htdocs` within the `xampp` folder in your Local Disk.
 3. Click "Start" on the Apache module in the XAMPP Control Panel.
-4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/Demo/welcome.php.
+4. Copy the file path to the `welcome.php` page into a web broswer using the following format: http://localhost/_filepath-in-htdocs_/welcome.php.
 5. Follow the instructutions and proceed with the application.
 
 ## Miscellaneous
