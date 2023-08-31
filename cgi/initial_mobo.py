@@ -14,22 +14,6 @@ success = True
 # Read provided formData
 formData = cgi.FieldStorage()
 
-# Define function for checking that required parameters have been submitted
-def checkFormData(data, expectedArgs):
-    argsDefined = True
-    for i in range(0,len(expectedArgs)):
-        if expectedArgs[i] not in data:
-            argsDefined = False
-            break
-    return argsDefined
-
-# expectedArgs = ['parameter-names', 'parameter-bounds', 'objective-names', 'objective-bounds', 'objective-min-max', 'good-solutions', 'bad-solutions']
-# formValuesDefined = checkFormData(formData, expectedArgs)
-
-# if not formValuesDefined:
-#     success = False
-#     message = "Form values not defined."
-# else:
 parameterNames = (formData['parameter-names'].value).split(',')
 parameterBounds = (formData['parameter-bounds'].value).split(',')
 objectiveNames = (formData['objective-names'].value).split(',')

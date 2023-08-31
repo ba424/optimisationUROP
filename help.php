@@ -20,8 +20,8 @@
     <h2 id="existing-solutions">(ii) Existing solutions</h2>
     <p> Before proceeding to the optimisation stage, you can include any exisitng solutions that you know are bad. The AI will not propose any solutions that are within 5% of the listed bad solutions.</p>
     <p> If there are no bad solutions that you are aware of, you can proceed directly to the optimisation stage by click 'No let's start'.</p> 
-    <p> To include a bad solution, click the button <b>'Yes, some'</b>. You will then be presented with a table of the design parameters where, by clicking <b>'Add Bad Solution'</b>, you are able to insert the paramter values of such solutions.</p> 
-    <p> Once you have included all the bad solutions, click <b>'Finish'</b> to proceed. An error will be raised if any entry is blank and/or if any entry is not a number within the specfieid paramter range defined previously. You are able to delete any entry by clicking the red trash button on the right column of the table.</p> 
+    <p> To include a bad solution, click the button <b>'Yes, some'</b>. You will then be presented with a table of the design parameters where, by clicking <b>'Add Bad Solution'</b>, you are able to insert the parameter values of such solutions.</p> 
+    <p> Once you have included all the bad solutions, click <b>'Finish'</b> to proceed. An error will be raised if any entry is blank and/or if any entry is not a number within the specified parameter range defined previously. You are able to delete any entry by clicking the red trash button on the right column of the table.</p> 
     <p><i>Note: It is possible to click <b>'Finish'</b> with no entries in the table.</i></p>
     <div style="text-align: center;">
         <button class="button" id="back-button" onclick="history.back()" style="width: 20%;">Go Back</button>    
