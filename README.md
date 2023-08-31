@@ -30,9 +30,10 @@ The `cgi` Python module is used to store the necessary variables and information
 Apache is used to run the program locally and so ensure you have [XAMPP](https://www.apachefriends.org/) installed first before use. To run the program: 
 1. Download the files as a zip folder.
 2. Copy the folder into `htdocs` within the `xampp` folder in your Local Disk.
-3. Click "Start" on the Apache module in the XAMPP Control Panel.
-4. Copy the file path to the `welcome.php` page into a web broswer using the following format: `http://localhost/Demo/welcome.php` where `Demo` is the filepath to `welcome.php` from the folder `htdocs`.
-5. Follow the instructutions and proceed with the application.
+3. Ensure the first line of the Python files in the `cgi` folder contains the file path to Python on your local system.
+4. Click "Start" on the Apache module in the XAMPP Control Panel.
+5. Copy the file path to the `welcome.php` page into a web broswer using the following format: `http://localhost/Demo/welcome.php` where `Demo` is the filepath to `welcome.php` from the folder `htdocs`.
+6. Follow the instructutions and proceed with the application.
 
 ## Miscellaneous
 The `Archive` folder includes previous copies of files for testing and reference purposes. The `Pictures` folder includes the images used in the front-end in the prgram. 
