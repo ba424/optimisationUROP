@@ -1,7 +1,7 @@
 # Optimise Anything: UROP 2023
 
 ## Introduction
-The purpose of this project is to develop a program to perform multi-objective Bayesian optimisation (MOBO) aimed at the every day person. It includes the ability to define design paramters and design objectives to be minimised and/or maximised. The user is also able to define solutions that are already known to not be satisfactory which the AI takes into account when performing the optimisation. The interface has been designed to be as simple as possible in order to ensure ease of use. 
+The purpose of this project is to develop a program to perform multi-objective Bayesian optimisation (MOBO) aimed at the everyday person. It includes the ability to define design parameters and design objectives to be minimised and/or maximised. The user is also able to define solutions that are already known to not be satisfactory which the AI takes into account when performing the optimisation. The interface has been designed to be as simple as possible in order to ensure ease of use. 
 
 The project builds on the previous work on MOBO by [L. Chan et. al](https://dl.acm.org/doi/pdf/10.1145/3491102.3501850)<sup>1</sup>, [Y. -C. Liao et al.](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10024515)<sup>2</sup>, and [G. Mo](https://github.com/georgemo535/D3MOBO)<sup>3</sup>.
 
@@ -15,7 +15,7 @@ The PHP files represent the front-end of the program. The sequence of pages is:
 6. `optimise.php`: Solutions proposed by AI and evaluated by the user
 7. `results.php`: Summary of best solutions evaluated
 
-`styles.css` is the stylesheet used as the foundation for the pages. `help.php` offers an explanation of the key stages to the program (defining design paramaters and objectives, adding existing solutions, optimisation, and results), and can be accessed via those respective pages.
+`styles.css` is the stylesheet used as the foundation for the pages. `help.php` offers an explanation of the key stages to the program (defining design parameters and objectives, adding existing solutions, optimisation, and results), and can be accessed via those respective pages.
 
 ## Back-end
 The `cgi` folder contains the Python scripts that form the back-end to the program. The purpose of each is listed below:
@@ -36,7 +36,7 @@ Apache is used to run the program locally and so ensure you have [XAMPP](https:/
 6. Follow the instructutions and proceed with the application.
 
 ## Miscellaneous
-The `Archive` folder includes previous copies of files for testing and reference purposes. The `Pictures` folder includes the images used in the front-end in the prgram. 
+The `Archive` folder includes previous copies of files for testing and reference purposes. The `Pictures` folder includes the images used in the front-end in the program. 
 
 ## References
 1. Chan, L. et al. (2022) ‘Investigating positive and negative qualities of human-in-the-loop optimization for designing interaction techniques’, CHI Conference on Human Factors in Computing Systems [Preprint]. doi:10.1145/3491102.3501850.
